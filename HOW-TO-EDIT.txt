@@ -1,0 +1,23 @@
+CLIPS WEBSITE
+
+Everything you normally change is at the top of index.html,
+between "EDIT HERE" and "END OF EDIT AREA".
+Open index.html with TextEdit (right click > Open With > TextEdit).
+
+BUY LINKS
+  Replace [AXIOM LINK] and [GMGN LINK] with your real links. Keep the quotes.
+
+CAMPAIGNS
+  One line per campaign inside "const CAMPAIGNS = [ ... ]".
+  Copy a line to add one, delete a line to remove one, keep the commas.
+  sky can be: dawn, morning, noon, haze, dusk, night.
+  Lines marked SAMPLE are placeholders.
+
+VIDEO
+  Search for "PASTE INSTAGRAM EMBED HERE".
+  Delete the <div class="video-frame"> block under it and paste Instagram's embed code.
+  On Vercel the embed plays normally.
+
+UPDATING THE LIVE SITE
+  After editing, drag this whole folder onto your Vercel project again
+  (or run "vercel --prod" inside the folder). The link stays the same.

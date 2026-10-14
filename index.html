@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Clips campaigns, including King of the Hill with official partner Tayo Ricci.">
+<meta name="theme-color" content="#4F8FDB">
+<title>Clips</title>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}img{max-width:100%}</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+
+<script>
+/* =====================================================================
+   EDIT HERE: everything you normally change lives in this block.
+   ===================================================================== */
+
+/* 1. LINKS
+   Replace the text between the quotes with your real links.
+   Example:  axiom: "https://axiom.trade/meme/abc123",                 */
+const LINKS = {
+  axiom:  "[AXIOM LINK]",
+  gmgn:   "[GMGN LINK]",
+  launch: ""          /* link for "Launch your campaign", leave "" for now */
+};
+
+/* 2. TAYO RICCI VIDEO
+   If you only have a normal Instagram post link, paste it here and a
+   "Watch on Instagram" button appears under the video box.
+   For the full embed, search this file for "PASTE INSTAGRAM EMBED".     */
+const VIDEO_LINK = "";
+
+/* 3. CAMPAIGNS
+   One block per campaign, separated by commas.
+   id        short name for the web address: lowercase, words joined with -, must be unique
+   name      campaign name
+   tagline   one short line
+   sky       card color: "dawn", "morning", "noon", "haze", "dusk" or "night"
+   featured  true for the one campaign that should stand out
+   details   the facts on the featured card: value (big text) and label (small text)
+   axiom / gmgn (optional) a different buy link for this campaign only
+   Campaigns marked SAMPLE are placeholders. Replace or delete them.     */
+const CAMPAIGNS = [
+  {
+    id: "king-of-the-hill",
+    name: "King of the Hill",
+    tagline: "The World Cup campaign with Tayo Ricci.",
+    featured: true,
+    details: [
+      { value: "Tayo Ricci", label: "Official partner" },
+      { value: "20M+",       label: "Followers across all platforms" },
+      { value: "World Cup",  label: "Campaign" },
+      { value: "200M+",      label: "Views on the World Cup song" }
+    ]
+  },
+  { id: "golden-hour",    name: "Golden Hour",    tagline: "Short clips, caught at the right moment.", sky: "dusk"    }, /* SAMPLE */
+  { id: "paper-planes",   name: "Paper Planes",   tagline: "Ideas that travel on their own.",          sky: "morning" }, /* SAMPLE */
+  { id: "open-road",      name: "Open Road",      tagline: "A campaign for the long way round.",       sky: "haze"    }, /* SAMPLE */
+  { id: "tidal",          name: "Tidal",          tagline: "Small waves, shared everywhere.",          sky: "noon"    }, /* SAMPLE */
+  { id: "northern-light", name: "Northern Light", tagline: "Night content with a soft glow.",          sky: "night"   }, /* SAMPLE */
+  { id: "first-flight",   name: "First Flight",   tagline: "A starting point for new creators.",       sky: "dawn"    }  /* SAMPLE */
+];
+/* ======================= END OF EDIT AREA ============================ */
+</script>
+
+<style>
+/* Layout: a living sky behind everything. Home is a quiet headline over a tilted
+   conveyor of square campaign cards. A campaign page is title, facts and buy
+   buttons beside a portrait video frame, over a white panel with search and list. */
+:root{
+  color-scheme: light;
+  --sky-1:#4F8FDB;
+  --sky-2:#8DBEEF;
+  --sky-3:#CFE5FA;
+  --sky-4:#F3F8FD;
+  --ink:#0B1B33;
+  --ink-2:#4F6078;
+  --ink-3:#8494AA;
+  --line:rgba(11,27,51,.09);
+  --surface:#FFFFFF;
+  --accent:#2C74D6;
+  --night:#0A1730;
+  --f-sans:"Geist", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --card:264px;
+  --card-f:330px;
+  --gap:20px;
+}
+*{box-sizing:border-box}
+html{background:var(--sky-4)}
+body{margin:0;background:var(--sky-4);color:var(--ink);font:400 16px/1.55 var(--f-sans);
+  -webkit-font-smoothing:antialiased;overflow-x:clip;font-feature-settings:"ss01"}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+::selection{background:#CFE3FB}
+
+/* ---------- sky ---------- */
+.sky{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(70% 55% at 78% -5%, rgba(255,250,236,.55), transparent 60%),
+    linear-gradient(180deg,var(--sky-1) 0%,var(--sky-2) 34%,var(--sky-3) 68%,var(--sky-4) 100%)}
+#clouds{position:absolute;inset:0;width:100%;height:100%}
+
+.page{position:relative;z-index:1;padding-inline:clamp(16px,4vw,40px)}
+.wrap{max-width:1200px;margin-inline:auto}
+
+/* ---------- header ---------- */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;padding-block:16px;
+  transition:background .4s var(--ease),box-shadow .4s var(--ease);margin-inline:calc(-1 * clamp(16px,4vw,40px));padding-inline:clamp(16px,4vw,40px)}
+header.top.scrolled{background:rgba(243,248,253,.72);backdrop-filter:blur(20px) saturate(170%);-webkit-backdrop-filter:blur(20px) saturate(170%);box-shadow:0 1px 0 var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1200px;margin-inline:auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:19px;letter-spacing:-.03em}
+.nav{display:flex;align-items:center;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:40px;padding:0 18px;
+  border-radius:999px;font:500 14px/1 var(--f-sans);letter-spacing:-.005em;white-space:nowrap;cursor:pointer;
+  border:1px solid transparent;transition:background .3s var(--ease),border-color .3s var(--ease),transform .2s var(--ease),color .3s}
+.btn:active{transform:scale(.98)}
+.btn svg{flex:none;transition:transform .3s var(--ease)}
+.btn:hover svg{transform:translate(2px,-2px)}
+.btn-solid{background:var(--ink);color:#fff}
+.btn-solid:hover{background:#1A2E4F}
+.btn-line{background:rgba(255,255,255,.5);color:var(--ink);border-color:rgba(11,27,51,.14)}
+.btn-line:hover{background:#fff;border-color:rgba(11,27,51,.22)}
+.btn-lg{height:50px;padding:0 24px;font-size:15px}
+
+/* ---------- home ---------- */
+.hero{padding-block:clamp(48px,9vw,112px) clamp(8px,2vw,16px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end}
+.label{font:500 11.5px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+.label i{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(44,116,214,.15)}
+.hero h1{margin:20px 0 0;font-weight:500;font-size:clamp(44px,7.2vw,96px);line-height:.98;letter-spacing:-.05em;color:#fff;
+  text-wrap:balance;max-width:12ch;text-shadow:0 1px 40px rgba(11,27,51,.10)}
+.hero p{margin:22px 0 0;max-width:40ch;font-size:clamp(16px,1.6vw,18px);color:rgba(11,27,51,.72)}
+.hero .label{color:rgba(11,27,51,.62)}
+
+.stage{position:relative;overflow:hidden;padding-block:clamp(64px,9vw,120px);
+  margin-inline:calc(-1 * clamp(16px,4vw,40px));
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.tilt{transform:rotate(-6deg);width:130%;margin-left:-15%;display:grid;gap:var(--gap)}
+.row{display:flex;width:max-content;animation:slide var(--dur,80s) linear infinite}
+.row.rev{animation-direction:reverse}
+.stage:hover .row,.stage:focus-within .row{animation-play-state:paused}
+.set{display:flex;align-items:center;gap:var(--gap);padding-right:var(--gap)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* card */
+.card{flex:none;width:var(--card);aspect-ratio:1;max-width:100%;display:flex;flex-direction:column;
+  background:var(--surface);border-radius:20px;overflow:hidden;
+  box-shadow:0 1px 0 rgba(11,27,51,.04),0 24px 48px -30px rgba(11,27,51,.45);
+  transition:transform .6s var(--ease),box-shadow .6s var(--ease)}
+.card:hover{transform:translateY(-6px);box-shadow:0 1px 0 rgba(11,27,51,.04),0 36px 60px -30px rgba(11,27,51,.55)}
+.art{position:relative;flex:1;min-height:0;margin:8px 8px 0;border-radius:14px;overflow:hidden}
+.art::after{content:"";position:absolute;inset:0;transition:transform 1.2s var(--ease);
+  background:
+    radial-gradient(38% 22% at var(--cx,30%) 82%,rgba(255,255,255,.95),rgba(255,255,255,0) 70%),
+    radial-gradient(30% 18% at calc(var(--cx,30%) + 18%) 76%,rgba(255,255,255,.85),rgba(255,255,255,0) 70%),
+    radial-gradient(55% 20% at calc(var(--cx,30%) + 8%) 96%,rgba(255,255,255,.9),rgba(255,255,255,0) 70%)}
+.card:hover .art::after{transform:translateX(6%)}
+.art .open{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(255,255,255,.85);opacity:0;transform:scale(.9);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.card:hover .open{opacity:1;transform:none}
+.meta{padding:14px 16px 16px}
+.meta h3{margin:0;font-weight:500;font-size:19px;line-height:1.15;letter-spacing:-.03em}
+.meta p{margin:4px 0 0;font-size:13.5px;line-height:1.4;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* sky palettes for cards */
+.sky-dawn   {background:linear-gradient(180deg,#7C8FD6 0%,#E7A9B8 62%,#FBD9C4 100%)}
+.sky-morning{background:linear-gradient(180deg,#5B9BE6 0%,#A9D1F5 60%,#E8F3FD 100%)}
+.sky-noon   {background:linear-gradient(180deg,#2F79D8 0%,#78B4F0 58%,#CBE5FB 100%)}
+.sky-haze   {background:linear-gradient(180deg,#8FA9C6 0%,#C9D8E6 60%,#EEF2F6 100%)}
+.sky-dusk   {background:linear-gradient(180deg,#3E4C93 0%,#C9798B 55%,#F6B98A 100%)}
+.sky-night  {background:linear-gradient(180deg,#0B1736 0%,#26386E 62%,#5A5E9B 100%)}
+.sky-night::after{opacity:.35}
+
+/* featured card */
+.card.feat{width:var(--card-f);background:var(--night);color:#fff;position:relative;
+  box-shadow:0 0 0 1px rgba(255,255,255,.08) inset,0 40px 70px -34px rgba(10,23,48,.85)}
+.card.feat::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(80% 60% at 100% 0%,rgba(110,150,240,.35),transparent 60%),
+    radial-gradient(60% 50% at 0% 100%,rgba(70,110,210,.25),transparent 60%)}
+.stars{position:absolute;inset:0;pointer-events:none;opacity:.7;
+  background-image:
+    radial-gradient(1px 1px at 18% 22%,#fff,transparent),radial-gradient(1px 1px at 72% 14%,#fff,transparent),
+    radial-gradient(1px 1px at 86% 40%,#fff,transparent),radial-gradient(1px 1px at 40% 10%,#fff,transparent),
+    radial-gradient(1.5px 1.5px at 60% 30%,#fff,transparent),radial-gradient(1px 1px at 28% 44%,rgba(255,255,255,.7),transparent)}
+.feat-inner{position:relative;display:flex;flex-direction:column;justify-content:space-between;height:100%;padding:22px}
+.feat-top{display:flex;justify-content:space-between;align-items:center}
+.badge{font:500 10.5px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;padding:7px 10px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.88);display:inline-flex;gap:7px;align-items:center}
+.badge i{width:5px;height:5px;border-radius:50%;background:#9EC4FF;box-shadow:0 0 10px #9EC4FF}
+.card.feat h3{margin:0;font-weight:500;font-size:30px;letter-spacing:-.04em;line-height:1}
+.feat-sub{margin:6px 0 0;font-size:13px;color:rgba(255,255,255,.62)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;margin-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+.fgrid div{padding:11px 0 0;min-width:0}
+.fgrid div:nth-child(n+3){border-top:1px solid rgba(255,255,255,.12);margin-top:11px}
+.fgrid div:nth-child(even){padding-left:14px;border-left:1px solid rgba(255,255,255,.12)}
+.fgrid b{display:block;font-weight:500;font-size:19px;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.fgrid span{display:block;margin-top:3px;font-size:11px;line-height:1.3;color:rgba(255,255,255,.6)}
+.card.feat .open{position:static;opacity:1;transform:none;background:rgba(255,255,255,.12)}
+
+.launch{margin-block:clamp(24px,5vw,56px) clamp(48px,8vw,96px);background:var(--surface);border-radius:28px;
+  padding:clamp(28px,5vw,56px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:end;
+  box-shadow:0 1px 0 rgba(11,27,51,.04),0 30px 60px -44px rgba(11,27,51,.4)}
+.launch h2{margin:14px 0 0;font-weight:500;font-size:clamp(30px,4.4vw,52px);line-height:1;letter-spacing:-.045em;text-wrap:balance;max-width:16ch}
+.launch p{margin:14px 0 0;color:var(--ink-2);max-width:46ch}
+
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:28px 44px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--ink-3)}
+
+/* ---------- campaign page ---------- */
+.camp-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);gap:clamp(28px,6vw,80px);
+  padding-block:clamp(32px,6vw,72px) clamp(40px,6vw,72px);align-items:end}
+.back{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:rgba(11,27,51,.7);margin-bottom:28px;transition:color .3s}
+.back:hover{color:var(--ink)}
+.camp-head h1{margin:18px 0 0;font-weight:500;font-size:clamp(52px,8.4vw,116px);line-height:.94;letter-spacing:-.055em;color:#fff;
+  text-wrap:balance;text-shadow:0 1px 40px rgba(11,27,51,.10)}
+.camp-tag{margin:20px 0 0;font-size:clamp(16px,1.7vw,19px);color:rgba(11,27,51,.72);max-width:42ch}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:36px 0 0;background:rgba(255,255,255,.62);
+  border:1px solid rgba(255,255,255,.9);border-radius:18px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.facts div{padding:18px 18px 16px;min-width:0}
+.facts div+div{border-left:1px solid var(--line)}
+.facts b{display:block;font-weight:500;font-size:clamp(20px,2.2vw,26px);line-height:1.05;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.facts span{display:block;margin-top:6px;font-size:12.5px;line-height:1.35;color:var(--ink-2)}
+.buys{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+
+.video{background:var(--surface);border-radius:24px;padding:10px;box-shadow:0 1px 0 rgba(11,27,51,.04),0 40px 70px -40px rgba(11,27,51,.5)}
+.video-frame{aspect-ratio:9/14;max-width:100%;border-radius:16px;overflow:hidden;position:relative;display:grid;place-items:center;text-align:center;
+  background:linear-gradient(180deg,#5B9BE6 0%,#A9D1F5 60%,#E8F3FD 100%)}
+.video-frame::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(45% 14% at 30% 84%,rgba(255,255,255,.95),transparent 70%),radial-gradient(40% 12% at 62% 90%,rgba(255,255,255,.9),transparent 70%)}
+.vp{position:relative;z-index:1;padding:24px;color:#fff}
+.vp .play{width:62px;height:62px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;
+  background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.vp strong{display:block;font-weight:500;font-size:20px;letter-spacing:-.03em}
+.vp small{display:block;margin-top:6px;font-size:13px;color:rgba(255,255,255,.85)}
+.video-cap{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 8px 6px;font-size:13px;color:var(--ink-2)}
+.video-cap b{font-weight:500;color:var(--ink)}
+#video-link{width:100%;margin-top:8px}
+
+.panel{background:var(--surface);border-radius:28px 28px 0 0;margin-inline:calc(-1 * clamp(16px,4vw,40px));
+  padding:clamp(28px,5vw,56px) clamp(16px,4vw,40px) clamp(40px,6vw,72px);box-shadow:0 -1px 0 var(--line)}
+.panel-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:20px;margin-bottom:24px}
+.panel-head h2{margin:12px 0 0;font-weight:500;font-size:clamp(28px,3.4vw,40px);letter-spacing:-.04em;line-height:1}
+.search{position:relative;flex:1 1 320px;max-width:440px}
+.search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--ink-3);pointer-events:none}
+.search input{width:100%;height:48px;padding:0 16px 0 44px;border-radius:999px;border:1px solid rgba(11,27,51,.12);
+  background:#F6F8FB;color:var(--ink);font:400 15px var(--f-sans);transition:border-color .3s,background .3s,box-shadow .3s}
+.search input::placeholder{color:var(--ink-3)}
+.search input:focus{outline:none;background:#fff;border-color:var(--accent);box-shadow:0 0 0 4px rgba(44,116,214,.12)}
+.list{border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:18px;align-items:center;padding:14px 4px;border-bottom:1px solid var(--line);
+  transition:background .3s var(--ease),padding .3s var(--ease)}
+.item:hover{background:#F6F9FC;padding-inline:12px}
+.thumb{width:56px;height:56px;border-radius:12px;position:relative;overflow:hidden}
+.thumb::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 26% at 40% 86%,rgba(255,255,255,.9),transparent 70%)}
+.thumb.sky-night::after{opacity:.35}
+.item b{display:block;font-weight:500;font-size:17px;letter-spacing:-.02em;line-height:1.2}
+.item span{display:block;margin-top:2px;font-size:14px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .end{display:flex;align-items:center;gap:12px;color:var(--ink-3)}
+.tag{font:500 10.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;padding:6px 9px;border-radius:999px;background:#EEF3F9;color:var(--ink-2)}
+.tag.now{background:var(--ink);color:#fff}
+.empty{padding:32px 4px;color:var(--ink-2);border-bottom:1px solid var(--line)}
+.count{font:500 12px/1 var(--f-mono);letter-spacing:.08em;color:var(--ink-3);font-variant-numeric:tabular-nums;margin-top:16px}
+
+body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(-1 * clamp(16px,4vw,40px));
+  padding-inline:clamp(16px,4vw,40px)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:60;transform:translate(-50%,16px);opacity:0;
+  pointer-events:none;padding:12px 18px;border-radius:999px;background:var(--ink);color:#fff;font-size:14px;
+  transition:opacity .35s var(--ease),transform .35s var(--ease);max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.view{animation:enter .8s var(--ease)}
+@keyframes enter{from{opacity:.3;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .camp-head{grid-template-columns:minmax(0,1fr);align-items:start}
+  .video{max-width:420px}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts div:nth-child(3){border-left:0}
+  .facts div:nth-child(n+3){border-top:1px solid var(--line)}
+}
+@media (max-width:640px){
+  :root{--card:204px;--card-f:258px;--gap:14px}
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero .btn-lg{justify-self:start}
+  .launch{grid-template-columns:minmax(0,1fr);align-items:start}
+  .launch .btn{justify-self:start}
+  .nav .btn-launch-top{display:none}
+  .meta{padding:11px 13px 13px}
+  .meta h3{font-size:16px}
+  .meta p{font-size:12px;-webkit-line-clamp:1}
+  .feat-inner{padding:16px}
+  .card.feat h3{font-size:23px}
+  .feat-sub{display:none}
+  .fgrid{margin-top:10px}
+  .fgrid div{padding-top:8px}
+  .fgrid div:nth-child(n+3){margin-top:8px}
+  .fgrid div:nth-child(even){padding-left:10px}
+  .fgrid b{font-size:15px}
+  .fgrid span{font-size:10px}
+  .buys .btn{flex:1 1 150px}
+  .item{grid-template-columns:48px minmax(0,1fr) auto;gap:14px}
+  .thumb{width:48px;height:48px}
+  .item .end svg{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .row,.view{animation:none}
+  .stage{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+
+<div class="sky" aria-hidden="true"><canvas id="clouds"></canvas></div>
+
+<div class="page">
+  <header class="top" id="top">
+    <nav class="bar" aria-label="Main">
+      <a class="brand" href="#home" aria-label="Clips home">
+        <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+          <rect width="30" height="30" rx="9" fill="#0B1B33"/>
+          <path d="M19.6 10.2A6.6 6.6 0 1 0 19.6 19.8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+          <circle cx="20.4" cy="15" r="2" fill="#8DBEEF"/>
+        </svg>
+        Clips
+      </a>
+      <div class="nav">
+        <a class="btn btn-line" href="#home">Clips</a>
+        <a class="btn btn-solid btn-launch-top" href="#launch" data-launch>Launch your campaign</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================= HOME ================= -->
+  <main id="home-view" class="view">
+    <section class="wrap hero">
+      <div>
+        <div class="label"><i></i>Live campaigns</div>
+        <h1>Every campaign on Clips.</h1>
+        <p>Open a campaign to see its details and buy.</p>
+      </div>
+      <a class="btn btn-solid btn-lg" href="#launch" data-launch>Launch your campaign
+        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="stage" aria-label="All campaigns">
+      <div class="tilt">
+        <div class="row" id="row-a"></div>
+        <div class="row rev" id="row-b"></div>
+      </div>
+    </section>
+
+    <section class="wrap launch">
+      <div>
+        <div class="label">For creators and teams</div>
+        <h2>Launch your campaign on Clips.</h2>
+        <p>Bring your campaign here and it joins the rest in the sky.</p>
+      </div>
+      <a class="btn btn-solid btn-lg" href="#launch" data-launch>Launch your campaign
+        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+  </main>
+
+  <!-- ================= CAMPAIGN PAGE ================= -->
+  <main id="camp-view" class="view" hidden>
+    <section class="wrap camp-head">
+      <div>
+        <a class="back" href="#home">
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 3 5 7l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          All campaigns
+        </a>
+        <div class="label" id="camp-label"><i></i>Campaign</div>
+        <h1 id="camp-name">King of the Hill</h1>
+        <p class="camp-tag" id="camp-tagline"></p>
+        <div class="facts" id="camp-facts" hidden></div>
+        <div class="buys">
+          <a class="btn btn-solid btn-lg" id="buy-axiom" href="#" target="_blank" rel="noopener">Buy on Axiom
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+          <a class="btn btn-line btn-lg" id="buy-gmgn" href="#" target="_blank" rel="noopener">Buy on GMGN
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <aside class="video" aria-label="Tayo Ricci video">
+        <div id="video-slot">
+          <!-- ============ PASTE INSTAGRAM EMBED HERE ============
+               Delete the whole <div class="video-frame"> ... </div> block below
+               and paste Instagram's embed code in its place.                 -->
+          <div class="video-frame">
+            <div class="vp">
+              <div class="play"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4.5v11l9-5.5z" fill="#fff"/></svg></div>
+              <strong>Video coming soon</strong>
+              <small>Tayo Ricci on Clips</small>
+            </div>
+          </div>
+          <!-- ============ END OF VIDEO AREA ============ -->
+        </div>
+        <div class="video-cap"><b>Tayo Ricci</b><span>Instagram</span></div>
+        <a class="btn btn-line" id="video-link" href="#" target="_blank" rel="noopener" hidden>Watch on Instagram</a>
+      </aside>
+    </section>
+
+    <section class="panel">
+      <div class="wrap">
+        <div class="panel-head">
+          <div>
+            <div class="label">Directory</div>
+            <h2>All campaigns</h2>
+          </div>
+          <label class="search" for="search-input">
+            <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m14 14 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input id="search-input" type="search" placeholder="Search campaigns" autocomplete="off" aria-label="Search campaigns">
+          </label>
+        </div>
+        <div class="list" id="list"></div>
+        <div class="count" id="count"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap" id="footer">
+    <span>© Clips</span>
+    <span>Nothing on this site is financial advice. Crypto assets are volatile.</span>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const isSet = l => l && !/^\[.*\]$/.test(String(l).trim());
+  const SKIES = ["dawn","morning","noon","haze","dusk","night"];
+  const skyOf = (c, i) => SKIES.includes(c.sky) ? c.sky : SKIES[i % SKIES.length];
+  const cloudX = id => 18 + ([...id].reduce((a,ch) => a + ch.charCodeAt(0), 0) % 40);
+  const arrowSvg = (stroke) => `<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+
+  /* ---------- toast ---------- */
+  let tt;
+  function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 2600); }
+
+  /* ---------- clouds (canvas) ---------- */
+  const cv = $("#clouds"), ctx = cv.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W = 0, H = 0, DPR = 1, clouds = [];
+  function rand(a,b){ return a + Math.random() * (b - a); }
+  function makeSprite(w, h){
+    const c = document.createElement("canvas");
+    c.width = Math.round(w); c.height = Math.round(h);
+    const g = c.getContext("2d");
+    const puffs = Math.round(rand(18, 30));
+    for (let i = 0; i < puffs; i++){
+      const t = i / puffs;
+      const x = w * (0.18 + 0.64 * Math.random());
+      const spread = 1 - Math.abs(x / w - 0.5) * 1.6;
+      const y = h * (0.62 - Math.random() * 0.34 * spread);
+      const r = h * rand(0.18, 0.34) * (0.6 + spread * 0.6);
+      const gr = g.createRadialGradient(x, y, 0, x, y, r);
+      gr.addColorStop(0, "rgba(255,255,255,0.55)");
+      gr.addColorStop(0.55, "rgba(255,255,255,0.32)");
+      gr.addColorStop(1, "rgba(255,255,255,0)");
+      g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+    }
+    /* soft shaded base */
+    for (let i = 0; i < 8; i++){
+      const x = w * rand(0.25, 0.75), y = h * rand(0.66, 0.78), r = h * rand(0.14, 0.24);
+      const gr = g.createRadialGradient(x, y, 0, x, y, r);
+      gr.addColorStop(0, "rgba(176,200,230,0.16)");
+      gr.addColorStop(1, "rgba(176,200,230,0)");
+      g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+    }
+    return c;
+  }
+  function setupClouds(){
+    DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    const mobile = W < 640;
+    const layers = [
+      {n: mobile ? 3 : 5, s: [0.35, 0.55], speed: 5,  a: 0.55, y: [0.02, 0.55]},
+      {n: mobile ? 3 : 4, s: [0.6, 0.9],   speed: 9,  a: 0.8,  y: [0.05, 0.75]},
+      {n: mobile ? 2 : 3, s: [1.0, 1.35],  speed: 15, a: 0.95, y: [0.2, 0.9]}
+    ];
+    clouds = [];
+    layers.forEach(L => {
+      for (let i = 0; i < L.n; i++){
+        const k = rand(L.s[0], L.s[1]);
+        const w = Math.min(560, Math.max(260, W * 0.42)) * k;
+        const h = w * 0.46;
+        clouds.push({img: makeSprite(w, h), w, h, x: rand(-w, W), y: H * rand(L.y[0], L.y[1]) - h / 2, v: L.speed * rand(0.8, 1.2), a: L.a});
+      }
+    });
+  }
+  let last = performance.now();
+  function frame(now){
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    ctx.clearRect(0, 0, W, H);
+    for (const c of clouds){
+      if (!reduce){ c.x += c.v * dt; if (c.x > W + 20) c.x = -c.w - rand(0, 200); }
+      ctx.globalAlpha = c.a;
+      ctx.drawImage(c.img, c.x, c.y, c.w, c.h);
+    }
+    ctx.globalAlpha = 1;
+    if (!reduce) requestAnimationFrame(frame);
+  }
+
+  /* ---------- cards ---------- */
+  function card(c, i){
+    if (c.featured){
+      const d = (c.details || []).slice(0, 4);
+      return `<a class="card feat" href="#${esc(c.id)}" aria-label="${esc(c.name)}, featured campaign">
+        <span class="stars"></span>
+        <div class="feat-inner">
+          <div class="feat-top"><span class="badge"><i></i>Featured</span><span class="open">${arrowSvg("#fff")}</span></div>
+          <div>
+            <h3>${esc(c.name)}</h3>
+            <p class="feat-sub">${esc(c.tagline)}</p>
+            <div class="fgrid">${d.map(x => `<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div>`).join("")}</div>
+          </div>
+        </div></a>`;
+    }
+    return `<a class="card" href="#${esc(c.id)}">
+      <div class="art sky-${skyOf(c, i)}" style="--cx:${cloudX(c.id)}%"><span class="open">${arrowSvg("#0B1B33")}</span></div>
+      <div class="meta"><h3>${esc(c.name)}</h3><p>${esc(c.tagline)}</p></div></a>`;
+  }
+
+  function buildRow(el, items, speed){
+    el.innerHTML = "";
+    if (!items.length) return;
+    const set = document.createElement("div");
+    set.className = "set";
+    el.appendChild(set);
+    const minW = Math.max(window.innerWidth * 1.5, 1000);
+    let guard = 0;
+    do { set.insertAdjacentHTML("beforeend", items.map(x => card(x.c, x.i)).join("")); guard++; }
+    while (guard < 12 && set.scrollWidth < minW);
+    const clone = set.cloneNode(true);
+    clone.setAttribute("aria-hidden", "true");
+    clone.querySelectorAll("a").forEach(a => a.tabIndex = -1);
+    el.appendChild(clone);
+    el.style.setProperty("--dur", (set.scrollWidth / speed) + "s");
+  }
+
+  function buildHome(){
+    const all = CAMPAIGNS.map((c, i) => ({c, i}));
+    const feat = all.filter(x => x.c.featured), rest = all.filter(x => !x.c.featured);
+    const half = Math.ceil(rest.length / 2);
+    const a = [...feat, ...rest.slice(0, half)];
+    let b = rest.slice(half);
+    if (b.length < 3) b = [...b, ...rest.slice(0, 3 - b.length)];
+    buildRow($("#row-a"), a, 26);
+    buildRow($("#row-b"), b.length ? b : rest, 22);
+  }
+
+  /* ---------- campaign page ---------- */
+  let current = null;
+  function renderList(){
+    const q = $("#search-input").value.trim().toLowerCase();
+    const hits = CAMPAIGNS.map((c, i) => ({c, i})).filter(({c}) => !q || (c.name + " " + c.tagline).toLowerCase().includes(q));
+    $("#count").textContent = `${hits.length} of ${CAMPAIGNS.length} campaigns`;
+    $("#list").innerHTML = hits.length ? hits.map(({c, i}) => {
+      const now = current && c.id === current.id;
+      const sky = c.featured ? "night" : skyOf(c, i);
+      return `<a class="item" href="#${esc(c.id)}"${now ? ' aria-current="page"' : ""}>
+        <span class="thumb sky-${sky}"></span>
+        <div><b>${esc(c.name)}</b><span>${esc(c.tagline)}</span></div>
+        <div class="end">${now ? '<span class="tag now">Viewing</span>' : (c.featured ? '<span class="tag">Featured</span>' : "")}${arrowSvg("currentColor")}</div>
+      </a>`;
+    }).join("") : `<div class="empty">No campaigns match “${esc(q)}”.</div>`;
+  }
+
+  function setBuy(el, link){
+    if (isSet(link)){ el.href = link; el.removeAttribute("data-unset"); }
+    else { el.href = "#"; el.setAttribute("data-unset", ""); }
+  }
+
+  function showCampaign(c){
+    current = c;
+    document.title = c.name + " · Clips";
+    $("#camp-name").textContent = c.name;
+    $("#camp-tagline").textContent = c.tagline;
+    $("#camp-label").innerHTML = "<i></i>" + (c.featured ? "Featured campaign" : "Campaign");
+    const f = $("#camp-facts");
+    if (c.featured && c.details && c.details.length){
+      f.innerHTML = c.details.map(x => `<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div>`).join("");
+      f.hidden = false;
+    } else f.hidden = true;
+    setBuy($("#buy-axiom"), c.axiom || LINKS.axiom);
+    setBuy($("#buy-gmgn"), c.gmgn || LINKS.gmgn);
+    $("#search-input").value = "";
+    renderList();
+  }
+
+  document.addEventListener("click", e => {
+    if (e.target.closest("[data-unset]")){ e.preventDefault(); toast("This buy link has not been added yet."); return; }
+    if (e.target.closest("[data-launch]")){
+      e.preventDefault();
+      if (isSet(LINKS.launch)) location.href = LINKS.launch;
+      else toast("Campaign launches are not open yet.");
+    }
+  });
+  $("#search-input").addEventListener("input", renderList);
+  if (isSet(VIDEO_LINK)){ const v = $("#video-link"); v.href = VIDEO_LINK; v.hidden = false; }
+
+  /* ---------- routing ---------- */
+  function route(){
+    const id = decodeURIComponent(location.hash.slice(1));
+    const c = CAMPAIGNS.find(x => x.id === id);
+    const home = $("#home-view"), camp = $("#camp-view");
+    if (c){
+      home.hidden = true; camp.hidden = false;
+      camp.classList.remove("view"); void camp.offsetWidth; camp.classList.add("view");
+      showCampaign(c);
+      window.scrollTo(0, 0);
+    } else {
+      camp.hidden = true; home.hidden = false; current = null;
+      document.title = "Clips";
+    }
+    document.body.classList.toggle("on-camp", !!c);
+  }
+  window.addEventListener("hashchange", route);
+
+  const top = $("#top");
+  const onScroll = () => top.classList.toggle("scrolled", window.scrollY > 8);
+  window.addEventListener("scroll", onScroll, {passive: true});
+
+  let rt;
+  window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { buildHome(); setupClouds(); if (reduce) frame(performance.now()); }, 250); });
+
+  setupClouds();
+  requestAnimationFrame(t => { last = t; frame(t); });
+  buildHome();
+  route();
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
