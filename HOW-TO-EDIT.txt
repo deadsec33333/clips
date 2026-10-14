@@ -4,20 +4,29 @@ Everything you normally change is at the top of index.html,
 between "EDIT HERE" and "END OF EDIT AREA".
 Open index.html with TextEdit (right click > Open With > TextEdit).
 
+TAYO'S PHOTO
+  Put his picture in this folder and name it tayo.jpg.
+  In index.html find PARTNER and change   photo:  ""   to   photo:  "tayo.jpg"
+
+FEE POOL
+  Each campaign has feePool: 25000 (dollars, numbers only, no $ or commas).
+  Change the number. Dollars and percentages on the leaderboard update by themselves.
+
+LEADERBOARD
+  Find LEADERBOARD. Each line is one clipper:
+  { username: "goalcam.edits", views: 1840000 },
+  Change the name or views, copy a line to add a clipper, delete a line to remove one.
+  When the numbers are real, change LEADERBOARD_IS_SAMPLE = true to false.
+
 BUY LINKS
   Replace [AXIOM LINK] and [GMGN LINK] with your real links. Keep the quotes.
 
 CAMPAIGNS
   One line per campaign inside "const CAMPAIGNS = [ ... ]".
-  Copy a line to add one, delete a line to remove one, keep the commas.
-  sky can be: dawn, morning, noon, haze, dusk, night.
   Lines marked SAMPLE are placeholders.
 
 VIDEO
-  Search for "PASTE INSTAGRAM EMBED HERE".
-  Delete the <div class="video-frame"> block under it and paste Instagram's embed code.
-  On Vercel the embed plays normally.
+  Search for "PASTE INSTAGRAM EMBED HERE" and paste Instagram's embed code there.
 
 UPDATING THE LIVE SITE
-  After editing, drag this whole folder onto your Vercel project again
-  (or run "vercel --prod" inside the folder). The link stays the same.
+  Upload this whole folder to the same Vercel project again. The link stays the same.
