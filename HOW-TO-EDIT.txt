@@ -5,8 +5,9 @@ between "EDIT HERE" and "END OF EDIT AREA".
 Open index.html with TextEdit (right click > Open With > TextEdit).
 
 TAYO'S PHOTO
-  Put his picture in this folder and name it tayo.jpg.
-  In index.html find PARTNER and change   photo:  ""   to   photo:  "tayo.jpg"
+  His photo is built into index.html, so index.html alone is enough.
+  To use a bigger picture later, put it in this folder (e.g. tayo-big.jpg)
+  and in index.html change   photo:  ""   to   photo:  "tayo-big.jpg"
 
 FEE POOL
   Each campaign has feePool: 25000 (dollars, numbers only, no $ or commas).
