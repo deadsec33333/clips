@@ -59,9 +59,9 @@ const CAMPAIGNS = [
     ticker: "",
     featured: true,
     feePool: 25000,   /* SAMPLE amount */
-    badges: ["Official partner", "10.1M on TikTok", "6.1M on Instagram", "World Cup campaign"],
+    badges: ["Official partner", "20M+ followers", "World Cup campaign"],
     details: [
-      { value: "Tayo Ricci", label: "Official partner" },
+      { value: "20M+",       label: "Followers across all platforms" },
       { value: "10.1M",      label: "TikTok followers" },
       { value: "6.1M",       label: "Instagram followers" },
       { value: "3.1M",       label: "YouTube subscribers" }
@@ -960,7 +960,7 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
   let offset = 0, paused = false, setW = 0, nudge = 0;
   function tcard(c, rank){
     const cover = c.featured
-      ? `<span class="art sky-night" style="display:block"><span class="fcover"><img class="bg" src="${esc(PARTNER.photo)}" alt=""><span class="ring"><img src="${esc(PARTNER.photo)}" alt="${esc(PARTNER.name)}"></span><span class="feat">Featured</span><span class="fb"><span>@${esc(PARTNER.handle)}</span><span>World Cup</span></span></span></span>`
+      ? `<span class="art sky-night" style="display:block"><span class="fcover"><img class="bg" src="${esc(PARTNER.photo)}" alt=""><span class="ring"><img src="${esc(PARTNER.photo)}" alt="${esc(PARTNER.name)}"></span><span class="feat">Featured</span><span class="fb"><span>@${esc(PARTNER.handle)}</span><span>20M+ followers</span></span></span></span>`
       : art(c, "", "display:block");
     return `<a class="tcard" href="#c-${esc(c.id)}">${cover}<div class="tn"><i>${rank}</i>${esc(c.name)}</div><div class="tv num">${compact(c.views)}<small>views</small></div></a>`;
   }
@@ -1009,7 +1009,7 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
     }
     el.innerHTML = `<div class="thead"><span>Campaign</span><span class="r hm">Clippers</span><span class="r hm">Views</span><span class="r">Fee pool</span></div>` +
       a.map(c => `<a class="trow" href="#c-${esc(c.id)}">
-        <div class="who">${art(c, "av")}<div><b>${esc(c.name)}${c.ticker ? `<i>${esc(c.ticker)}</i>` : ""}${c.featured ? ' <span class="tag blue">Featured</span>' : ""}</b><span>${c.featured ? `with @${esc(PARTNER.handle)} · ` : ""}${esc(c.tagline)}</span></div></div>
+        <div class="who">${art(c, "av")}<div><b>${esc(c.name)}${c.ticker ? `<i>${esc(c.ticker)}</i>` : ""}${c.featured ? ' <span class="tag blue">Featured</span>' : ""}</b><span>${c.featured ? `with @${esc(PARTNER.handle)}, 20M+ followers · ` : ""}${esc(c.tagline)}</span></div></div>
         <span class="r cell num hm">${c.clippers}</span>
         <span class="r cell num hm">${compact(c.views)}</span>
         <span class="r cell num">${usdC(c.pool)}<small class="hm-inv">${compact(c.views)} views</small></span>
@@ -1040,7 +1040,7 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
     $("#c-av").outerHTML = art(c, "av", "width:72px;height:72px;border-radius:18px").replace('class="art', 'id="c-av" class="art');
     $("#c-name").innerHTML = esc(c.name) + (c.ticker ? ` <i>${esc(c.ticker)}</i>` : "");
     $("#c-meta").innerHTML = c.featured
-      ? `<a class="p" href="${esc(PARTNER.instagram)}" target="_blank" rel="noopener"><img src="${esc(PARTNER.photo)}" alt="">@${esc(PARTNER.handle)}</a><span class="tag blue">Official partner</span><span>World Cup campaign</span>`
+      ? `<a class="p" href="${esc(PARTNER.instagram)}" target="_blank" rel="noopener"><img src="${esc(PARTNER.photo)}" alt="">@${esc(PARTNER.handle)}</a><span class="tag blue">Official partner</span><span>20M+ followers</span><span>World Cup campaign</span>`
       : `<span>${esc(c.tagline)}</span>`;
     $("#c-pool").textContent = usd(c.pool);
     $("#c-stage").hidden = !c.featured;
