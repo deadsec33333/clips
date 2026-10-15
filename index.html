@@ -162,18 +162,18 @@ section[id]{scroll-margin-top:84px}
 .wrap{max-width:1200px;margin-inline:auto}
 
 /* ---------- header ---------- */
-header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;padding-block:14px;
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;padding-block:14px;background:rgba(243,248,253,.28);backdrop-filter:blur(14px) saturate(150%);-webkit-backdrop-filter:blur(14px) saturate(150%);
   margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter);
   transition:background .4s var(--ease),box-shadow .4s var(--ease)}
 header.top.scrolled{background:rgba(243,248,253,.74);backdrop-filter:blur(20px) saturate(170%);-webkit-backdrop-filter:blur(20px) saturate(170%);box-shadow:0 1px 0 var(--line)}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1200px;margin-inline:auto}
-.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:20px;letter-spacing:-.035em}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:21px;letter-spacing:-.035em;color:var(--ink);text-shadow:0 1px 12px rgba(255,255,255,.7)}
 .logo{flex:none;overflow:visible;border-radius:11px;box-shadow:0 6px 18px -8px rgba(9,21,48,.6),0 0 0 1px rgba(255,255,255,.35)}
 .logo .arm{transform-box:view-box;transform-origin:10.4px 15.6px;transform:rotate(-16deg);transition:transform .5s var(--ease)}
 .brand:hover .logo .arm{animation:snap .7s var(--ease)}
 @keyframes snap{0%{transform:rotate(-16deg)}35%{transform:rotate(0)}100%{transform:rotate(-16deg)}}
 .nav{display:flex;align-items:center;gap:6px}
-.nav .txt{font-size:14px;color:rgba(11,27,51,.72);padding:0 10px;height:40px;display:inline-flex;align-items:center;border-radius:999px;transition:color .3s,background .3s}
+.nav .txt{font-size:14px;font-weight:500;color:#1E3150;padding:0 10px;height:40px;display:inline-flex;align-items:center;border-radius:999px;transition:color .3s,background .3s}
 .nav .txt:hover{color:var(--ink);background:rgba(255,255,255,.5)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:40px;padding:0 18px;
   border-radius:999px;font:500 14px/1 var(--f-sans);letter-spacing:-.005em;white-space:nowrap;cursor:pointer;
@@ -192,10 +192,13 @@ header.top.scrolled{background:rgba(243,248,253,.74);backdrop-filter:blur(20px) 
 
 /* ---------- home hero ---------- */
 .hero{padding-block:clamp(44px,8vw,104px) clamp(8px,2vw,16px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end}
-.hero h1{margin:20px 0 0;font-weight:500;font-size:clamp(44px,7.2vw,96px);line-height:.98;letter-spacing:-.05em;color:#fff;
-  text-wrap:balance;max-width:12ch;text-shadow:0 1px 40px rgba(11,27,51,.10)}
-.hero p{margin:22px 0 0;max-width:40ch;font-size:clamp(16px,1.6vw,18px);color:rgba(11,27,51,.72)}
-.hero .label{color:rgba(11,27,51,.62)}
+.hero{position:relative}
+.hero::before{content:"";position:absolute;z-index:-1;left:-12%;right:30%;top:8%;bottom:-10%;pointer-events:none;
+  background:radial-gradient(60% 60% at 30% 50%,rgba(243,248,253,.55),rgba(243,248,253,0) 70%)}
+.hero h1{margin:20px 0 0;font-weight:600;font-size:clamp(44px,7.2vw,96px);line-height:.98;letter-spacing:-.05em;color:var(--ink);
+  text-wrap:balance;max-width:12ch;text-shadow:0 1px 24px rgba(255,255,255,.45)}
+.hero p{margin:22px 0 0;max-width:40ch;font-size:clamp(16px,1.6vw,18px);color:#1E3150;font-weight:500;text-shadow:0 1px 14px rgba(255,255,255,.6)}
+.hero .label{color:#1E3150}
 
 /* ---------- conveyor ---------- */
 .stage{position:relative;overflow:hidden;padding-block:clamp(64px,9vw,120px);margin-inline:calc(-1 * var(--gutter));
@@ -367,9 +370,27 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
   padding-block:clamp(32px,6vw,72px) clamp(40px,6vw,72px);align-items:end}
 .back{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:rgba(11,27,51,.7);margin-bottom:28px;transition:color .3s}
 .back:hover{color:var(--ink)}
-.camp-head h1{margin:18px 0 0;font-weight:500;font-size:clamp(52px,8.4vw,116px);line-height:.94;letter-spacing:-.055em;color:#fff;
-  text-wrap:balance;text-shadow:0 1px 40px rgba(11,27,51,.10)}
-.camp-tag{margin:20px 0 0;font-size:clamp(16px,1.7vw,19px);color:rgba(11,27,51,.72);max-width:42ch}
+.camp-head h1,.board-head h1{margin:18px 0 0;font-weight:600;font-size:clamp(52px,8.4vw,116px);line-height:.94;letter-spacing:-.055em;color:var(--ink);
+  text-wrap:balance;text-shadow:0 1px 24px rgba(255,255,255,.45)}
+.camp-tag{margin:20px 0 0;font-size:clamp(16px,1.7vw,19px);color:#1E3150;font-weight:500;max-width:42ch;text-shadow:0 1px 14px rgba(255,255,255,.6)}
+.board-head{padding-block:clamp(32px,6vw,72px) clamp(32px,5vw,56px)}
+.back{color:#1E3150!important;font-weight:500}
+.label{color:#2A3D5C}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.chip{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--ink);
+  background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:background .3s}
+.chip:hover{background:#fff}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.teaser-wrap{padding-bottom:clamp(48px,7vw,88px)}
+.teaser{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:clamp(18px,3vw,40px);align-items:center;padding:clamp(20px,3vw,28px) clamp(20px,3vw,32px);
+  background:var(--surface);border-radius:24px;box-shadow:0 1px 0 rgba(11,27,51,.04),0 30px 60px -40px rgba(11,27,51,.5);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.teaser:hover{transform:translateY(-3px);box-shadow:0 1px 0 rgba(11,27,51,.04),0 36px 70px -40px rgba(11,27,51,.6)}
+.t-left b{display:block;margin-top:10px;font-weight:500;font-size:clamp(19px,2vw,24px);letter-spacing:-.03em;line-height:1.2}
+.t-stats{display:flex;gap:clamp(18px,3vw,36px)}
+.t-stats b{display:block;font-weight:500;font-size:22px;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.t-stats span{display:block;margin-top:4px;font:500 10.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.lb-open{color:var(--accent);font-weight:500;margin-left:6px}
+.lb-open:hover{text-decoration:underline}
 .partner{display:inline-flex;align-items:center;gap:12px;margin-top:22px;padding:6px 8px 6px 6px;border-radius:999px;background:rgba(255,255,255,.72);
   border:1px solid rgba(255,255,255,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .partner .av{width:40px;height:40px;border-radius:50%;overflow:hidden;flex:none;background:linear-gradient(170deg,#24407A,#0A1730)}
@@ -495,6 +516,10 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
   .lb-top{grid-template-columns:minmax(0,1fr)}
   .totals{text-align:left;grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+@media (max-width:760px){
+  .teaser{grid-template-columns:minmax(0,1fr)}
+  .t-btn{justify-self:start}
+}
 @media (max-width:640px){
   :root{--card:204px;--card-f:268px;--gap:14px}
   .hero{grid-template-columns:minmax(0,1fr)}
@@ -528,7 +553,7 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
   .lb-row{grid-template-columns:22px 36px minmax(0,1fr) auto;gap:10px;padding:12px 4px}
   .lb-row .views{display:none}
   .who{flex-wrap:wrap;row-gap:2px}
-  .who span{font-size:14.5px;max-width:calc(100% - 34px)}
+  .who span{font-size:14.5px;max-width:100%}
   .who .vm{display:block;width:100%;font-size:12.5px;color:var(--ink-3);font-weight:400}
   .av-c{width:36px;height:36px;font-size:13px}
   .lb-row.top .av-c{width:40px;height:40px}
@@ -578,6 +603,7 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
         Clips
       </a>
       <div class="nav">
+        <a class="txt" href="#campaigns">Campaigns</a>
         <a class="txt" href="#how">How it works</a>
         <a class="txt" href="#why">Why Clips</a>
         <a class="btn btn-line" href="#home">Clips</a>
@@ -592,9 +618,9 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
       <div>
         <div class="label"><i></i>Live campaigns</div>
         <h1>Every campaign on Clips.</h1>
-        <p>Open a campaign to see its leaderboard and buy.</p>
+        <p>Open a campaign to see its partner, video and buy links.</p>
       </div>
-      <a class="btn btn-solid btn-lg" href="#launch" data-launch>Launch your campaign
+      <a class="btn btn-solid btn-lg" href="#campaigns">See campaigns
         <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </a>
     </section>
@@ -743,7 +769,7 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
   <main id="camp-view" class="view" hidden>
     <section class="wrap camp-head">
       <div>
-        <a class="back" href="#home">
+        <a class="back" href="#campaigns">
           <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 3 5 7l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           All campaigns
         </a>
@@ -780,18 +806,43 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
         <a class="btn btn-line" id="video-link" href="#" target="_blank" rel="noopener" hidden>Watch on Instagram</a>
       </aside>
     </section>
+    <section class="wrap teaser-wrap">
+      <a class="teaser" id="teaser" href="#campaigns">
+        <div class="t-left">
+          <div class="label">Leaderboard</div>
+          <b id="teaser-title">See who is earning on this campaign</b>
+        </div>
+        <div class="t-stats" id="teaser-stats"></div>
+        <span class="btn btn-solid t-btn">View leaderboard
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </span>
+      </a>
+    </section>
+  </main>
 
+  <!-- ================= CAMPAIGNS & LEADERBOARD PAGE ================= -->
+  <main id="board-view" class="view" hidden>
+    <section class="wrap board-head">
+      <a class="back" href="#home">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 3 5 7l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Home
+      </a>
+      <div class="label"><i></i>Campaigns</div>
+      <h1>Leaderboard</h1>
+      <p class="camp-tag">Pick a campaign to see its clippers, views and earnings.</p>
+      <nav class="chips" id="chips" aria-label="Choose a campaign"></nav>
+    </section>
     <section class="panel">
       <div class="wrap">
         <div class="lb">
           <div class="lb-top">
             <div>
               <div class="label">Leaderboard</div>
-              <h2>Top clippers<span class="sample" id="lb-sample" hidden>Sample data</span></h2>
+              <h2><span id="lb-camp">Top clippers</span><span class="sample" id="lb-sample" hidden>Sample data</span></h2>
             </div>
             <div class="totals" id="lb-totals"></div>
           </div>
-          <p class="lb-note">The fee pool is shared between clippers by their share of total views.</p>
+          <p class="lb-note">The fee pool is shared between clippers by their share of total views. <a class="lb-open" id="lb-open" href="#">Open campaign</a></p>
           <div id="lb-list"></div>
         </div>
 
@@ -970,6 +1021,8 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
     const total = rows.reduce((s, r) => s + r.views, 0);
     const pool = Math.max(0, Number(c.feePool) || 0);
     $("#lb-sample").hidden = !LEADERBOARD_IS_SAMPLE;
+    $("#lb-camp").textContent = c.name;
+    $("#lb-open").href = "#" + c.id;
     $("#lb-totals").innerHTML = `
       <div class="big"><b title="${full(total)} views">${compact(total)}</b><span>Total views</span></div>
       <div><b>${usd(pool)}</b><span>Fee pool</span></div>
@@ -987,7 +1040,6 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
           <span class="rank">${k + 1}</span>
           <span class="av-c" style="--h:${hash(name) % 360}">${av || esc(name[0].toUpperCase())}</span>
           <div class="who"><span>${esc(name)}</span>
-            <a class="ig-sm" href="${igUrl(name)}" target="_blank" rel="noopener" aria-label="${esc(name)} on Instagram">${igSvg}</a>
             <em class="vm" style="font-style:normal">${compact(r.views)} views</em>
           </div>
           <span class="views r">${full(r.views)}</span>
@@ -1010,7 +1062,7 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
       return `<a class="item" href="#${esc(c.id)}"${now ? ' aria-current="page"' : ""}>
         ${thumb}
         <div><b>${esc(c.name)}</b><span>${esc(c.tagline)}</span></div>
-        <div class="end">${now ? '<span class="tag now">Viewing</span>' : (c.featured ? '<span class="tag">Featured</span>' : "")}${arrowSvg("currentColor")}</div>
+        <div class="end">${now ? '<span class="tag now">Selected</span>' : (c.featured ? '<span class="tag">Featured</span>' : "")}${arrowSvg("currentColor")}</div>
       </a>`;
     }).join("") : `<div class="empty">No campaigns match “${esc(q)}”.</div>`;
   }
@@ -1039,6 +1091,22 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
     } else f.hidden = true;
     setBuy($("#buy-axiom"), c.axiom || LINKS.axiom);
     setBuy($("#buy-gmgn"), c.gmgn || LINKS.gmgn);
+    const st = boardStats(c);
+    $("#teaser").href = "#lb-" + c.id;
+    $("#teaser-stats").innerHTML = st.clippers
+      ? `<div><b>${compact(st.views)}</b><span>Views</span></div><div><b>${usd(st.pool)}</b><span>Fee pool</span></div><div><b>${st.clippers}</b><span>Clippers</span></div>`
+      : `<div><b>${usd(st.pool)}</b><span>Fee pool</span></div>`;
+  }
+
+  function boardStats(c){
+    const rows = (LEADERBOARD[c.id] || []).filter(r => r && r.username);
+    return {views: rows.reduce((s, r) => s + Math.max(0, Number(r.views) || 0), 0), pool: Math.max(0, Number(c.feePool) || 0), clippers: rows.length};
+  }
+
+  function showBoard(c){
+    current = c;
+    document.title = "Leaderboard · Clips";
+    $("#chips").innerHTML = CAMPAIGNS.map(x => `<a class="chip${x.id === c.id ? " on" : ""}" href="#lb-${esc(x.id)}"${x.id === c.id ? ' aria-current="page"' : ""}>${esc(x.name)}</a>`).join("");
     $("#search-input").value = "";
     renderBoard(c);
     renderList();
@@ -1059,8 +1127,16 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
   function route(){
     const id = decodeURIComponent(location.hash.slice(1));
     const c = CAMPAIGNS.find(x => x.id === id);
-    const home = $("#home-view"), camp = $("#camp-view");
-    if (c){
+    const home = $("#home-view"), camp = $("#camp-view"), board = $("#board-view");
+    const boardId = id === "campaigns" ? ((CAMPAIGNS.find(x => x.featured) || CAMPAIGNS[0]) || {}).id : (id.startsWith("lb-") ? id.slice(3) : null);
+    const bc = boardId && CAMPAIGNS.find(x => x.id === boardId);
+    board.hidden = true;
+    if (bc){
+      home.hidden = true; camp.hidden = true; board.hidden = false;
+      board.classList.remove("view"); void board.offsetWidth; board.classList.add("view");
+      showBoard(bc);
+      window.scrollTo(0, 0);
+    } else if (c){
       home.hidden = true; camp.hidden = false;
       camp.classList.remove("view"); void camp.offsetWidth; camp.classList.add("view");
       showCampaign(c);
@@ -1073,7 +1149,7 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
       if (target && home.contains(target)) requestAnimationFrame(() => target.scrollIntoView({behavior: wasHidden ? "auto" : "smooth"}));
       else if (wasHidden) window.scrollTo(0, 0);
     }
-    document.body.classList.toggle("on-camp", !!c);
+    document.body.classList.toggle("on-camp", !!bc);
   }
   window.addEventListener("hashchange", route);
 
