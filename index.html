@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#4F8FDB">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}</style>
 <title>Clips</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='4' y='17' width='32' height='19' rx='5' fill='%235B9BE6'/%3E%3Crect x='4' y='11.5' width='32' height='5' rx='1.5' fill='%230B1B33'/%3E%3Cg transform='rotate(-16 5 11)'%3E%3Crect x='4' y='5' width='32' height='5.5' rx='1.5' fill='%230B1B33'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='t' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%231D3560'/%3E%3Cstop offset='1' stop-color='%23091530'/%3E%3C/linearGradient%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23A9DEFF'/%3E%3Cstop offset='.55' stop-color='%234F8FDB'/%3E%3Cstop offset='1' stop-color='%238C7CF2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='11' fill='url%28%23t%29'/%3E%3Crect x='9.2' y='17.2' width='21.6' height='14.4' rx='3.6' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3Cpath d='M18 21.2v6l5.2-3z' fill='url%28%23g%29'/%3E%3Cg transform='rotate%28-16 10.4 15.6%29'%3E%3Crect x='9' y='9.4' width='22' height='5.2' rx='1.7' fill='url%28%23g%29'/%3E%3Cpath d='M14 9.4h2.8l-2.5 5.2h-2.8zM20.4 9.4h2.8l-2.5 5.2h-2.8zM26.8 9.4h2.8l-2.5 5.2h-2.8z' fill='%23091530'/%3E%3C/g%3E%3Ccircle cx='10.4' cy='15.6' r='1.25' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
@@ -168,10 +168,10 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;padding-b
 header.top.scrolled{background:rgba(243,248,253,.74);backdrop-filter:blur(20px) saturate(170%);-webkit-backdrop-filter:blur(20px) saturate(170%);box-shadow:0 1px 0 var(--line)}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1200px;margin-inline:auto}
 .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:20px;letter-spacing:-.035em}
-.logo{flex:none;overflow:visible}
-.logo .arm{transform-box:view-box;transform-origin:5px 11px;transform:rotate(-17deg);transition:transform .5s var(--ease)}
+.logo{flex:none;overflow:visible;border-radius:11px;box-shadow:0 6px 18px -8px rgba(9,21,48,.6),0 0 0 1px rgba(255,255,255,.35)}
+.logo .arm{transform-box:view-box;transform-origin:10.4px 15.6px;transform:rotate(-16deg);transition:transform .5s var(--ease)}
 .brand:hover .logo .arm{animation:snap .7s var(--ease)}
-@keyframes snap{0%{transform:rotate(-17deg)}35%{transform:rotate(0)}100%{transform:rotate(-17deg)}}
+@keyframes snap{0%{transform:rotate(-16deg)}35%{transform:rotate(0)}100%{transform:rotate(-16deg)}}
 .nav{display:flex;align-items:center;gap:6px}
 .nav .txt{font-size:14px;color:rgba(11,27,51,.72);padding:0 10px;height:40px;display:inline-flex;align-items:center;border-radius:999px;transition:color .3s,background .3s}
 .nav .txt:hover{color:var(--ink);background:rgba(255,255,255,.5)}
@@ -556,25 +556,24 @@ body.on-camp footer{max-width:none;background:var(--surface);margin-inline:calc(
   <header class="top" id="top">
     <nav class="bar" aria-label="Main">
       <a class="brand" href="#home" aria-label="Clips home">
-        <svg class="logo" width="36" height="36" viewBox="0 0 40 40" aria-hidden="true">
+        <svg class="logo" width="38" height="38" viewBox="0 0 40 40" aria-hidden="true">
           <defs>
-            <linearGradient id="lg-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3F86DE"/><stop offset="1" stop-color="#A9D1F5"/></linearGradient>
-            <clipPath id="lg-arm"><rect x="4" y="4.5" width="32" height="6" rx="1.6"/></clipPath>
-            <clipPath id="lg-bar"><rect x="4" y="11.5" width="32" height="5" rx="1.4"/></clipPath>
-            <clipPath id="lg-body"><rect x="4" y="17.5" width="32" height="18.5" rx="5"/></clipPath>
+            <linearGradient id="lg-tile" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1D3560"/><stop offset="1" stop-color="#091530"/></linearGradient>
+            <linearGradient id="lg-sky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A9DEFF"/><stop offset=".55" stop-color="#4F8FDB"/><stop offset="1" stop-color="#8C7CF2"/></linearGradient>
+            <linearGradient id="lg-play" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A9DEFF"/><stop offset="1" stop-color="#5A86F0"/></linearGradient>
+            <clipPath id="lg-armclip"><rect x="9" y="9.4" width="22" height="5.2" rx="1.7"/></clipPath>
           </defs>
-          <rect x="4" y="17.5" width="32" height="18.5" rx="5" fill="url(#lg-sky)"/>
-          <g clip-path="url(#lg-body)" fill="#fff">
-            <ellipse cx="17" cy="35" rx="9" ry="4.2"/><ellipse cx="25" cy="33.6" rx="6" ry="4.4"/><ellipse cx="31" cy="35.6" rx="6" ry="3.2"/>
-          </g>
-          <circle cx="29" cy="23.5" r="2.4" fill="#FFF4D6"/>
-          <rect x="4" y="11.5" width="32" height="5" rx="1.4" fill="#0B1B33"/>
-          <g clip-path="url(#lg-bar)" fill="#CFE5FA"><path d="M9 11.5h4.5l-3 5H6zM18 11.5h4.5l-3 5H15zM27 11.5h4.5l-3 5H24z"/></g>
+          <rect width="40" height="40" rx="11" fill="url(#lg-tile)"/>
+          <rect x=".5" y=".5" width="39" height="39" rx="10.5" fill="none" stroke="#fff" stroke-opacity=".14"/>
+          <g transform="translate(20 20.4) scale(1.2) translate(-20 -20.2)">
+          <rect x="9.2" y="17.2" width="21.6" height="14.4" rx="3.6" fill="none" stroke="#fff" stroke-width="2.4"/>
+          <path d="M18 21.2v6l5.2-3z" fill="url(#lg-play)" stroke="url(#lg-play)" stroke-width="1.4" stroke-linejoin="round"/>
           <g class="arm">
-            <rect x="4" y="4.5" width="32" height="6" rx="1.6" fill="#0B1B33"/>
-            <g clip-path="url(#lg-arm)" fill="#CFE5FA"><path d="M6 4.5h4.5l3.4 6H9.4zM15 4.5h4.5l3.4 6h-4.5zM24 4.5h4.5l3.4 6h-4.5zM33 4.5h4.5l3.4 6h-4.5z"/></g>
+            <rect x="9" y="9.4" width="22" height="5.2" rx="1.7" fill="url(#lg-sky)"/>
+            <g clip-path="url(#lg-armclip)" fill="#091530"><path d="M14 9.4h2.8l-2.5 5.2h-2.8zM20.4 9.4h2.8l-2.5 5.2h-2.8zM26.8 9.4h2.8l-2.5 5.2h-2.8z"/></g>
           </g>
-          <circle cx="5.6" cy="11" r="1.5" fill="#fff" stroke="#0B1B33" stroke-width=".8"/>
+          <circle cx="10.4" cy="15.6" r="1.25" fill="#fff"/>
+          </g>
         </svg>
         Clips
       </a>
