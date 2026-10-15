@@ -1,19 +1,20 @@
 CLIPS WEBSITE
 
-Everything you normally change is at the top of index.html,
-between "EDIT HERE" and "END OF EDIT AREA".
-Open index.html with TextEdit (right click > Open With > TextEdit).
+SETTING UP THE BACKEND
+  Read SETUP.md first. It walks through the one-time setup in Vercel
+  and the admin page at /admin.html.
 
-1. LINKS: replace [AXIOM LINK] and [GMGN LINK]. Add your X and Telegram
-   links to make them appear in the side menu.
-2. PARTNER: Tayo's photo is built in. Leave photo as "".
-3. VIDEO: search for "PASTE INSTAGRAM EMBED HERE".
-4. CAMPAIGNS: one block per campaign. feePool is in dollars, numbers only.
-   ticker is optional, e.g. "KING".
-5. LEADERBOARD: one line per clipper: { username: "name", views: 123000 },
-   Set LEADERBOARD_IS_SAMPLE to false when the numbers are real.
-6. LEGAL: fill in operator (company or person) and contact email.
-   Have the Terms, Privacy and Risk pages checked before going public.
+ONCE THE BACKEND IS LIVE
+  Campaigns, leaderboards, Reels, clippers and payouts are managed in
+  the admin page (your-site/admin.html), not in index.html.
+
+STILL EDITED IN index.html (top of the file, "EDIT HERE")
+  LINKS: default buy links, X and Telegram links for the menu.
+  PARTNER: Tayo's name and Instagram (his photo is built in).
+  VIDEO: search for "PASTE INSTAGRAM EMBED HERE".
+  LEGAL: company name and contact email for the legal pages.
+  The CAMPAIGNS and LEADERBOARD lists there are only used while the
+  backend is not set up yet.
 
 UPDATING THE LIVE SITE
-  Upload this folder to the same Vercel project again. The link stays the same.
+  Push this folder to GitHub. Vercel deploys it automatically.

@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    { "source": "/r/:code", "destination": "/api/r?code=:code" }
+  ],
+  "functions": {
+    "api/**/*.js": { "maxDuration": 60 }
+  },
+  "crons": [
+    { "path": "/api/cron/refresh", "schedule": "0 9 * * *" },
+    { "path": "/api/cron/payouts", "schedule": "30 9 * * *" }
+  ]
+}

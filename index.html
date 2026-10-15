@@ -103,7 +103,12 @@ const LEADERBOARD = {
   ]
 };
 
-/* 6. LEGAL PAGES: fill these in before going public. */
+/* 6. LIVE DATA: when true, the site loads real campaigns and leaderboards from
+   the Clips backend (/api). If the backend is not set up yet it falls back to
+   the campaigns and leaderboard written above.                           */
+const USE_LIVE_DATA = true;
+
+/* 7. LEGAL PAGES: fill these in before going public. */
 const LEGAL = {
   operator: "Clips",                 /* legal name of the company or person running Clips */
   contact:  "",                      /* contact email, e.g. "legal@yourdomain.com" */
@@ -279,6 +284,32 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
 .gcard .gm span{display:block;font-size:13px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gcard .gs{display:flex;justify-content:space-between;margin-top:10px;font-size:13px;color:var(--ink-3)}
 .gcard .gs b{display:inline;font-size:14px;color:var(--ink)}
+
+.hero{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:clamp(20px,3vw,36px);padding:clamp(14px,2vw,18px);align-items:center}
+.h-photo{position:relative;display:block;aspect-ratio:1;max-width:100%;border-radius:20px;overflow:hidden;background:#0A1730}
+.h-photo .bg{position:absolute;inset:-12%;width:124%;height:124%;object-fit:cover;filter:blur(14px) saturate(1.2) brightness(.7);transform:scale(1.5)}
+.h-photo .ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:66%;aspect-ratio:1;border-radius:50%;padding:4px;overflow:hidden;
+  background:conic-gradient(from 210deg,#9FE0FF,#0A66FF,#7B6CF0,#9FE0FF);box-shadow:0 20px 50px -16px rgba(0,0,0,.7);transition:transform .6s var(--ease)}
+.h-photo:hover .ring{transform:translate(-50%,-52%) scale(1.03)}
+.h-photo .ring img{width:100%;height:100%;border-radius:50%;border:4px solid #0A1730;object-fit:cover;transform:scale(1.04)}
+.h-photo .feat{position:absolute;top:14px;left:14px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;padding:7px 10px;border-radius:999px;background:var(--accent)}
+.h-body{min-width:0;padding:clamp(4px,1vw,10px) clamp(4px,1.5vw,16px)}
+.h-tags{display:flex;flex-wrap:wrap;gap:6px}
+.h-body h2{margin:12px 0 0;font-weight:800;font-size:clamp(32px,4.4vw,52px);line-height:1;letter-spacing:-.045em}
+.h-by{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px;font-weight:600;font-size:15px}
+.h-by img{width:24px;height:24px;border-radius:50%}
+.h-ig{color:var(--accent-ink);font-weight:600}
+.h-ig:hover{text-decoration:underline}
+.h-tag{margin:8px 0 0;color:var(--ink-2)}
+.h-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:18px}
+.h-facts div{padding:12px 14px;border-radius:14px;background:var(--surface-2);min-width:0}
+.h-facts b{display:block;font-weight:800;font-size:19px;letter-spacing:-.03em}
+.h-facts span{display:block;font-size:12px;line-height:1.35;color:var(--ink-2)}
+.h-stats{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:16px;font-size:14px;color:var(--ink-2)}
+.h-stats b{color:var(--ink);font-weight:700}
+.h-buy{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+@media (max-width:1060px){.hero{grid-template-columns:minmax(0,260px) minmax(0,1fr)}.h-facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){.hero{grid-template-columns:minmax(0,1fr)}.h-buy .btn{flex:1 1 140px}}
 
 /* ---------- campaign page ---------- */
 .back{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#1E3150;margin-bottom:18px}
@@ -487,6 +518,16 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
 .cta p{margin:4px 0 0;opacity:.85}
 .cta .btn{background:#fff;color:var(--accent-ink)}
 
+/* join panel */
+.jf{display:grid;gap:8px;margin-top:10px}
+.jf input{width:100%;border:1px solid transparent;background:#fff;border-radius:10px;padding:10px 12px;font:500 13.5px var(--f);color:var(--ink)}
+.jf input:focus{outline:none;border-color:var(--accent)}
+.jlink{display:flex;gap:8px;align-items:center;margin-top:10px;padding:8px 8px 8px 12px;border-radius:12px;background:#fff;min-width:0}
+.jlink code{flex:1;min-width:0;font:600 12.5px var(--mono);color:var(--accent-ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jstat{display:block;margin-top:6px;font-size:12.5px;font-weight:500}
+.jstat.ok{color:var(--good)}.jstat.bad{color:var(--bad)}
+.btn[disabled]{opacity:.55;pointer-events:none}
+
 /* footer */
 .foot{width:100%;max-width:1220px;margin-inline:auto;padding:28px 0 36px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:13px;color:var(--ink-3)}
 .foot nav{display:flex;flex-wrap:wrap;gap:6px 20px}
@@ -612,14 +653,7 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
       <div><h1 class="t">Campaigns</h1><p class="sub">Every campaign on Clips. Clippers share all of the fees, by views.</p></div>
       <a class="btn btn-accent" href="#create">Launch a campaign</a>
     </div>
-    <div class="tr-head">
-      <h2 class="s">Trending</h2>
-      <div class="tr-nav">
-        <button class="icon-btn" id="tr-prev" type="button" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3 5 8l5 5"/></svg></button>
-        <button class="icon-btn" id="tr-next" type="button" aria-label="Next"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 5 5-5 5"/></svg></button>
-      </div>
-    </div>
-    <div class="track" id="track"><div class="belt" id="belt"></div></div>
+    <div id="hero-feat"></div>
 
     <div class="bar-row">
       <div class="tabs" role="tablist" id="sort-tabs">
@@ -685,9 +719,24 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
         </div>
         <div id="side-clip" hidden>
           <ol class="steps-mini">
-            <li><div><b>Put your Clips link in your bio</b>On Instagram. That is how you join, no account linking.</div></li>
-            <li><div><b>Post clips of this campaign</b>Every view on your clips counts toward your share.</div></li>
-            <li><div><b>Get paid from the fee pool</b>Clippers receive all of the fees, split by views.</div></li>
+            <li><div><b>Join with your Instagram</b>
+              <form class="jf" id="join-form" novalidate>
+                <input id="j-ig" placeholder="@yourinstagram" autocomplete="off" aria-label="Instagram username">
+                <input id="j-wallet" placeholder="Solana wallet for payouts" autocomplete="off" aria-label="Solana wallet">
+                <button class="btn btn-ink btn-sm" type="submit">Get my Clips link</button>
+              </form>
+              <div class="jlink" id="j-link" hidden><code id="j-link-text"></code><button class="btn btn-soft btn-sm" type="button" id="j-copy">Copy</button></div>
+            </div></li>
+            <li><div><b>Put the link in your bio</b>Paste it into your Instagram bio or bio links, then verify.
+              <button class="btn btn-soft btn-sm" type="button" id="j-verify" style="margin-top:8px;display:flex">Verify my bio</button>
+              <span class="jstat" id="j-vstat"></span>
+            </div></li>
+            <li><div><b>Submit your Reels</b>Every view counts toward your share of the fees.
+              <form class="jf" id="reel-form" novalidate>
+                <input id="j-reel" placeholder="https://www.instagram.com/reel/…" autocomplete="off" aria-label="Reel link">
+                <button class="btn btn-accent btn-sm" type="submit">Submit Reel</button>
+              </form>
+            </div></li>
           </ol>
           <a class="btn btn-soft" href="#docs" style="width:100%;margin-top:12px">Read how clipping works</a>
         </div>
@@ -906,16 +955,21 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
   let tt; function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 2600); }
 
   /* ---------- data ---------- */
-  const DATA = CAMPAIGNS.map((c, i) => {
-    const rows = (LEADERBOARD[c.id] || []).filter(r => r && r.username).map(r => ({...r, username: String(r.username).replace(/^@/, ""), views: Math.max(0, Number(r.views) || 0)})).sort((a, b) => b.views - a.views);
-    const views = rows.reduce((s, r) => s + r.views, 0);
-    return {...c, i, sky: skyOf(c, i), rows, views, pool: Math.max(0, Number(c.feePool) || 0), clippers: rows.length};
-  });
+  let IS_SAMPLE = LEADERBOARD_IS_SAMPLE, LIVE = false;
+  function buildData(list, board){
+    return list.map((c, i) => {
+      const rows = (board[c.id] || c.rows || []).filter(r => r && r.username).map(r => ({...r, username: String(r.username).replace(/^@/, ""), views: Math.max(0, Number(r.views) || 0)})).sort((a, b) => b.views - a.views);
+      const views = rows.reduce((s, r) => s + r.views, 0);
+      return {...c, i, sky: skyOf(c, i), rows, views, pool: Math.max(0, Number(c.feePool) || 0), clippers: rows.length};
+    });
+  }
+  let DATA = buildData(CAMPAIGNS, LEADERBOARD);
   const byId = id => DATA.find(c => c.id === id);
-  const featured = DATA.find(c => c.featured) || DATA[0];
+  let featured = DATA.find(c => c.featured) || DATA[0];
 
   function art(c, cls = "", style = ""){
     if (c.featured) return `<span class="art sky-night ${cls}" style="${style}"><img src="${esc(PARTNER.photo)}" alt="" loading="lazy"></span>`;
+    if (c.image) return `<span class="art sky-${c.sky} ${cls}" style="${style}"><img src="${esc(c.image)}" alt="" loading="lazy"></span>`;
     return `<span class="art cl sky-${c.sky} ${cls}" style="--cx:${18 + hash(c.id) % 40}%;${style}"></span>`;
   }
 
@@ -955,40 +1009,33 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
     if (!reduce) requestAnimationFrame(frame);
   }
 
-  /* ---------- trending belt ---------- */
-  const belt = $("#belt"), track = $("#track");
-  let offset = 0, paused = false, setW = 0, nudge = 0;
-  function tcard(c, rank){
-    const cover = c.featured
-      ? `<span class="art sky-night" style="display:block"><span class="fcover"><img class="bg" src="${esc(PARTNER.photo)}" alt=""><span class="ring"><img src="${esc(PARTNER.photo)}" alt="${esc(PARTNER.name)}"></span><span class="feat">Featured</span><span class="fb"><span>@${esc(PARTNER.handle)}</span><span>20M+ followers</span></span></span></span>`
-      : art(c, "", "display:block");
-    return `<a class="tcard" href="#c-${esc(c.id)}">${cover}<div class="tn"><i>${rank}</i>${esc(c.name)}</div><div class="tv num">${compact(c.views)}<small>views</small></div></a>`;
+  /* ---------- featured hero ---------- */
+  function renderHero(){
+    const c = featured; if (!c) { $("#hero-feat").innerHTML = ""; return; }
+    const facts = (c.details || []).map(x => `<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div>`).join("");
+    $("#hero-feat").innerHTML = `<div class="panel hero">
+      <a class="h-photo" href="#c-${esc(c.id)}" aria-label="Open ${esc(c.name)}">
+        <img class="bg" src="${esc(PARTNER.photo)}" alt="">
+        <span class="ring"><img src="${esc(PARTNER.photo)}" alt="${esc(PARTNER.name)}"></span>
+        <span class="feat">Featured</span>
+      </a>
+      <div class="h-body">
+        <div class="h-tags"><span class="tag blue">Official partner</span><span class="tag">World Cup campaign</span></div>
+        <h2>${esc(c.name)}</h2>
+        <div class="h-by"><img src="${esc(PARTNER.photo)}" alt="">${esc(PARTNER.name)} <a class="h-ig" href="${esc(PARTNER.instagram)}" target="_blank" rel="noopener">@${esc(PARTNER.handle)}</a></div>
+        <p class="h-tag">${esc(c.tagline)}</p>
+        <div class="h-facts">${facts}</div>
+        <div class="h-stats"><span><b class="num">${compact(c.views)}</b> views</span><span><b class="num">${usd(c.pool)}</b> fee pool</span><span><b class="num">${c.clippers}</b> clippers</span></div>
+        <div class="h-buy">
+          <a class="btn btn-ink" id="h-axiom" href="#" target="_blank" rel="noopener">Buy on Axiom<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 9 9 3M4 3h5v5"/></svg></a>
+          <a class="btn btn-accent" id="h-gmgn" href="#" target="_blank" rel="noopener">Buy on GMGN<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 9 9 3M4 3h5v5"/></svg></a>
+          <a class="btn btn-soft" href="#c-${esc(c.id)}">View campaign</a>
+        </div>
+      </div>
+    </div>`;
+    setBuy($("#h-axiom"), c.axiom || LINKS.axiom);
+    setBuy($("#h-gmgn"), c.gmgn || LINKS.gmgn);
   }
-  function buildBelt(){
-    const list = [...DATA].sort((a, b) => (b.featured - a.featured) || (b.views - a.views));
-    const html = list.map((c, k) => tcard(c, k + 1)).join("");
-    belt.innerHTML = html;
-    setW = belt.scrollWidth + 18;
-    let copies = 1;
-    while (belt.scrollWidth < track.clientWidth * 2 + setW && copies < 8){ belt.insertAdjacentHTML("beforeend", html); copies++; }
-    belt.querySelectorAll(".tcard").forEach((a, k) => { if (k >= list.length){ a.setAttribute("aria-hidden", "true"); a.tabIndex = -1; } });
-  }
-  function beltTick(dt){
-    if (!setW) return;
-    const speed = reduce ? 0 : (paused ? 0 : 28);
-    const step = nudge * Math.min(1, dt * 8); nudge -= step;
-    offset += speed * dt + step;
-    offset = ((offset % setW) + setW) % setW;
-    belt.style.transform = `translateX(${-offset}px)`;
-  }
-  track.addEventListener("mouseenter", () => paused = true);
-  track.addEventListener("mouseleave", () => paused = false);
-  track.addEventListener("focusin", () => paused = true);
-  track.addEventListener("focusout", () => paused = false);
-  $("#tr-next").onclick = () => nudge += 218;
-  $("#tr-prev").onclick = () => nudge -= 218;
-  let lastB = performance.now();
-  (function loopB(now){ beltTick(Math.min(.05, (now - lastB) / 1000)); lastB = now; requestAnimationFrame(loopB); })(lastB);
 
   /* ---------- campaigns list ---------- */
   let sortKey = "views", view = "list";
@@ -1035,7 +1082,9 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
   }
 
   /* ---------- campaign page ---------- */
+  let curCamp = null;
   function showCampaign(c){
+    curCamp = c;
     document.title = c.name + " · Clips";
     $("#c-av").outerHTML = art(c, "av", "width:72px;height:72px;border-radius:18px").replace('class="art', 'id="c-av" class="art');
     $("#c-name").innerHTML = esc(c.name) + (c.ticker ? ` <i>${esc(c.ticker)}</i>` : "");
@@ -1050,7 +1099,7 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
     $("#c-stats").innerHTML = `<div><span>Total views</span><b class="num">${compact(c.views)}</b></div><div><span>Clippers</span><b class="num">${c.clippers}</b></div><div><span>Fee pool</span><b class="num">${usdC(c.pool)}</b></div><div><span>Top clipper</span><b>${top ? esc(top.username) : "None yet"}</b></div>`;
     const f = $("#c-facts");
     if (c.featured && c.details){ f.innerHTML = c.details.map(x => `<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div>`).join(""); f.hidden = false; } else f.hidden = true;
-    $("#c-sample").hidden = !LEADERBOARD_IS_SAMPLE || !c.rows.length;
+    $("#c-sample").hidden = !IS_SAMPLE || !c.rows.length;
     $("#c-board").innerHTML = board(c);
     $("#c-desc").textContent = c.featured ? c.tagline + " Buy the campaign token or join as a clipper." : "Buy the campaign token or join as a clipper.";
     setBuy($("#buy-axiom"), c.axiom || LINKS.axiom);
@@ -1069,7 +1118,7 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
     $("#lb-totals").innerHTML = `<div><span>Total views</span><b class="num">${compact(c.views)}</b></div><div><span>Fee pool</span><b class="num">${usd(c.pool)}</b></div><div><span>Clippers</span><b class="num">${c.clippers}</b></div>`;
     $("#lb-name").textContent = c.name;
     $("#lb-open").href = "#c-" + c.id;
-    $("#lb-sample").hidden = !LEADERBOARD_IS_SAMPLE || !c.rows.length;
+    $("#lb-sample").hidden = !IS_SAMPLE || !c.rows.length;
     $("#lb-board").innerHTML = board(c);
   }
 
@@ -1078,7 +1127,7 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
   function showAnalytics(){
     document.title = "Analytics · Clips";
     const tv = DATA.reduce((s, c) => s + c.views, 0), tp = DATA.reduce((s, c) => s + c.pool, 0), tc = DATA.reduce((s, c) => s + c.clippers, 0);
-    $("#an-sample").hidden = !LEADERBOARD_IS_SAMPLE;
+    $("#an-sample").hidden = !IS_SAMPLE;
     $("#kpis").innerHTML = `<div><b class="num">${DATA.length}</b><span>Campaigns</span></div><div><b class="num">${compact(tc)}</b><span>Clippers</span></div><div><b class="num">${compact(tv)}</b><span>Total views</span></div><div><b class="num">${usdC(tp)}</b><span>Fee pools</span></div>`;
     drawChart();
   }
@@ -1121,12 +1170,27 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
   $("#f-img").addEventListener("change", e => {
     const f = e.target.files && e.target.files[0]; if (!f) return;
     if (f.size > 5 * 1024 * 1024){ toast("That image is over 5 MB. Choose a smaller one."); return; }
-    const r = new FileReader(); r.onload = () => { $("#f-img-box").innerHTML = `<img src="${r.result}" alt="">`; $("#p-av").className = "av art"; $("#p-av").innerHTML = `<img src="${r.result}" alt="">`; }; r.readAsDataURL(f);
+    const r = new FileReader(); r.onload = () => {
+      $("#f-img-box").innerHTML = `<img src="${r.result}" alt="">`; $("#p-av").className = "av art"; $("#p-av").innerHTML = `<img src="${r.result}" alt="">`;
+      const im = new Image(); im.onload = () => { const s = Math.min(1, 512 / Math.max(im.width, im.height)); const cv2 = document.createElement("canvas"); cv2.width = Math.round(im.width * s); cv2.height = Math.round(im.height * s); cv2.getContext("2d").drawImage(im, 0, 0, cv2.width, cv2.height); createImage = cv2.toDataURL("image/jpeg", .85); }; im.src = r.result;
+    }; r.readAsDataURL(f);
   });
   function step(n){ $$("[data-step]").forEach(s => s.hidden = s.dataset.step !== String(n)); $$("[data-st]").forEach(s => s.classList.toggle("on", s.dataset.st === String(n))); }
   $("#to-2").onclick = () => { if (!fv("#f-name")){ toast("Add a name to continue."); $("#f-name").focus(); return; } step(2); };
   $("#to-1").onclick = () => step(1);
-  $("#cform").addEventListener("submit", e => { e.preventDefault(); if (isSet(LINKS.launch)) location.href = LINKS.launch; else toast("Campaign launches open soon."); });
+  let createImage = "";
+  $("#cform").addEventListener("submit", async e => {
+    e.preventDefault();
+    if (isSet(LINKS.launch)){ location.href = LINKS.launch; return; }
+    if (!fv("#f-ig")){ toast("Add your Instagram so we can reach you."); $("#f-ig").focus(); return; }
+    const btn = e.submitter || $("#cform [type=submit]"); btn.disabled = true;
+    try {
+      const out = await api("/api/campaigns", { name: fv("#f-name"), ticker: fv("#f-ticker"), tagline: fv("#f-desc"), image: createImage, instagram: fv("#f-ig"), video: fv("#f-vid"), x: fv("#f-x"), telegram: fv("#f-tg"), website: fv("#f-web") });
+      toast(out.message || "Campaign submitted for review.");
+      $("#cform").reset(); createImage = ""; updPreview(); step(1);
+    } catch (err) { toast(err.message); }
+    btn.disabled = false;
+  });
 
   /* ---------- docs toc ---------- */
   $("#toc").innerHTML = $$("#doc-body section").map(s => `<button type="button" data-to="${s.id}">${esc(s.querySelector("h2").textContent)}</button>`).join("");
@@ -1212,6 +1276,66 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
 
   document.addEventListener("click", e => { if (e.target.closest("[data-unset]")){ e.preventDefault(); toast("This buy link has not been added yet."); } });
 
+  /* ---------- backend ---------- */
+  async function api(path, payload){
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 30000);
+    try {
+      const r = await fetch(path, payload ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), signal: ctl.signal } : { signal: ctl.signal });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || (r.status === 404 ? "Joining opens soon." : "Something went wrong. Try again."));
+      return j;
+    } catch (e) { if (e.name === "AbortError") throw new Error("That took too long. Try again."); if (e instanceof TypeError) throw new Error("Joining opens soon."); throw e; }
+    finally { clearTimeout(t); }
+  }
+  const store = { get(k){ try { return localStorage.getItem("clips-" + k) || ""; } catch { return ""; } }, set(k, v){ try { localStorage.setItem("clips-" + k, v); } catch {} } };
+  $("#j-ig").value = store.get("ig"); $("#j-wallet").value = store.get("wallet");
+  function busy(btn, on){ if (btn) btn.disabled = on; }
+  $("#join-form").addEventListener("submit", async e => {
+    e.preventDefault(); const btn = e.submitter; busy(btn, true);
+    try {
+      const out = await api("/api/join", { campaign: curCamp && curCamp.id, instagram: $("#j-ig").value, wallet: $("#j-wallet").value });
+      store.set("ig", out.instagram); store.set("wallet", $("#j-wallet").value.trim());
+      $("#j-link-text").textContent = out.link; $("#j-link").hidden = false;
+      const st = $("#j-vstat"); st.textContent = out.verified ? "Verified" : ""; st.className = "jstat" + (out.verified ? " ok" : "");
+      toast(out.next);
+    } catch (err) { toast(err.message); }
+    busy(btn, false);
+  });
+  $("#j-copy").addEventListener("click", async () => {
+    const t = $("#j-link-text").textContent;
+    try { await navigator.clipboard.writeText(t); toast("Link copied."); }
+    catch { const rg = document.createRange(); rg.selectNodeContents($("#j-link-text")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(rg); toast("Select and copy the link."); }
+  });
+  $("#j-verify").addEventListener("click", async e => {
+    const btn = e.currentTarget, st = $("#j-vstat"), ig = $("#j-ig").value || store.get("ig");
+    if (!ig){ toast("Enter your Instagram in step 1 first."); return; }
+    busy(btn, true); st.textContent = "Checking your bio…"; st.className = "jstat";
+    try { const out = await api("/api/verify", { instagram: ig }); st.textContent = out.message; st.className = "jstat " + (out.verified ? "ok" : "bad"); }
+    catch (err) { st.textContent = err.message; st.className = "jstat bad"; }
+    busy(btn, false);
+  });
+  $("#reel-form").addEventListener("submit", async e => {
+    e.preventDefault(); const btn = e.submitter, ig = $("#j-ig").value || store.get("ig");
+    if (!ig){ toast("Enter your Instagram in step 1 first."); return; }
+    busy(btn, true); toast("Checking your Reel…");
+    try { const out = await api("/api/submit", { campaign: curCamp && curCamp.id, instagram: ig, url: $("#j-reel").value }); toast(out.message); $("#j-reel").value = ""; }
+    catch (err) { toast(err.message); }
+    busy(btn, false);
+  });
+
+  async function loadLive(){
+    if (!USE_LIVE_DATA || location.protocol === "file:") return;
+    try {
+      const r = await fetch("/api/campaigns", { headers: { Accept: "application/json" } });
+      if (!r.ok) return;
+      const j = await r.json();
+      if (!j || !Array.isArray(j.campaigns) || !j.campaigns.length) return;
+      DATA = buildData(j.campaigns, {}); featured = DATA.find(c => c.featured) || DATA[0];
+      IS_SAMPLE = false; LIVE = true;
+      renderHero(); renderCampList(); route();
+    } catch (e) { /* backend not set up yet: keep the built-in data */ }
+  }
+
   /* ---------- router ---------- */
   function show(page, navKey){
     $$("[data-page]").forEach(p => { const on = p.dataset.page === page; p.hidden = !on; if (on){ p.classList.remove("enter"); void p.offsetWidth; p.classList.add("enter"); } });
@@ -1229,16 +1353,14 @@ h2.s{margin:0;font-weight:700;font-size:clamp(20px,2.2vw,24px);letter-spacing:-.
     if (h === "docs" || h === "how"){ show("docs", "docs"); document.title = "Docs · Clips"; return; }
     if (LEGAL_PAGES[h]){ show("legal", "terms"); showLegal(h); return; }
     show("campaigns", "campaigns"); document.title = "Clips";
-    requestAnimationFrame(() => { if (setW < 300) buildBelt(); });
   }
   window.addEventListener("hashchange", route);
 
   let rt, lw = innerWidth;
-  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { setupClouds(); if (Math.abs(innerWidth - lw) > 40){ lw = innerWidth; buildBelt(); } if (reduce) frame(performance.now()); }, 250); });
+  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { setupClouds(); if (reduce) frame(performance.now()); }, 250); });
 
   setupClouds(); requestAnimationFrame(t => { last = t; frame(t); });
-  renderCampList(); updPreview(); route();
-  requestAnimationFrame(buildBelt);
+  renderHero(); renderCampList(); updPreview(); route(); loadLive();
 })();
 </script>
 

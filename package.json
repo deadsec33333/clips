@@ -1,0 +1,16 @@
+{
+  "name": "clips",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@meteora-ag/dynamic-bonding-curve-sdk": "2.0.0",
+    "@solana/spl-token": "0.4.14",
+    "@solana/web3.js": "1.98.4",
+    "@supabase/supabase-js": "2.110.0",
+    "bn.js": "5.2.2",
+    "bs58": "6.0.0"
+  }
+}

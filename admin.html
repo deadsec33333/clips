@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Clips Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--bg:#EEF4FB;--surface:#fff;--s2:#F3F6FA;--ink:#0B1B33;--ink2:#4A5B73;--ink3:#8392A8;--line:rgba(11,27,51,.09);--accent:#0A66FF;--good:#12A150;--bad:#E5484D;--warn:#B7791F;
+  --f:"Poppins","Segoe UI",system-ui,sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.5 var(--f);padding:24px 16px 60px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:18px}
+h1{margin:0;font-weight:800;font-size:30px;letter-spacing:-.03em}
+h2{margin:0 0 12px;font-weight:700;font-size:18px;letter-spacing:-.02em}
+.card{background:var(--surface);border-radius:18px;padding:20px;box-shadow:0 20px 40px -36px rgba(11,27,51,.5);min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+input,select,textarea{width:100%;border:1px solid var(--line);background:var(--s2);border-radius:10px;padding:9px 11px;font:500 13.5px var(--f);color:var(--ink)}
+textarea{min-height:70px;font-family:var(--mono);font-size:12px}
+label{display:grid;gap:4px;font-size:12px;font-weight:600;color:var(--ink2)}
+button{border:0;border-radius:10px;height:38px;padding:0 14px;font:600 13.5px var(--f);cursor:pointer;background:var(--ink);color:#fff}
+button.soft{background:var(--s2);color:var(--ink)}
+button.blue{background:var(--accent)}
+button.red{background:var(--bad)}
+button:disabled{opacity:.5}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:600;background:var(--s2);color:var(--ink2)}
+.pill.ok{background:#E3F6EA;color:var(--good)}.pill.bad{background:#FDE8E8;color:var(--bad)}.pill.warn{background:#FFF3D6;color:var(--warn)}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:720px}
+th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}
+th{font-size:11.5px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+code,.mono{font-family:var(--mono);font-size:12px;word-break:break-all}
+.kv{display:grid;grid-template-columns:200px minmax(0,1fr);gap:4px 14px;font-size:13px}
+.kv b{font-weight:600;color:var(--ink2)}
+.out{white-space:pre-wrap;font-family:var(--mono);font-size:12px;background:var(--s2);border-radius:10px;padding:12px;max-height:340px;overflow:auto;margin-top:10px}
+.note{font-size:12.5px;color:var(--ink2);margin:6px 0 0}
+details summary{cursor:pointer;font-weight:600}
+@media (max-width:640px){.kv{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="row" style="justify-content:space-between"><h1>Clips Admin</h1><a href="/" style="color:var(--accent);font-weight:600;text-decoration:none">Open site</a></div>
+
+  <div class="card" id="login">
+    <h2>Sign in</h2>
+    <form class="row" id="login-form"><input id="secret" type="password" placeholder="Admin password (ADMIN_SECRET)" style="max-width:360px" autocomplete="current-password"><button>Sign in</button></form>
+    <p class="note">The password is the ADMIN_SECRET you set in Vercel. It stays in this browser tab only.</p>
+  </div>
+
+  <div id="app" hidden style="display:grid;gap:18px">
+    <div class="card">
+      <div class="row" style="justify-content:space-between"><h2>Status</h2><button class="soft" id="refresh-all">Reload</button></div>
+      <div class="kv" id="status"></div>
+    </div>
+
+    <div class="card">
+      <h2>Run jobs now</h2>
+      <p class="note" style="margin-bottom:10px">These also run by themselves every day. Payouts send real tokens only when PAYOUTS_ENABLED is true.</p>
+      <div class="row">
+        <button class="soft" data-run="/api/cron/refresh">Update views and bios</button>
+        <button class="soft" data-run="/api/cron/payouts?dry=1">Payouts: dry run</button>
+        <button class="red" data-run="/api/cron/payouts" data-confirm="1">Payouts: send for real</button>
+      </div>
+      <div class="out" id="run-out" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>Campaigns</h2>
+      <div class="tbl"><table><thead><tr><th>Campaign</th><th>Status</th><th>Token</th><th>Fees</th><th></th></tr></thead><tbody id="camps"></tbody></table></div>
+      <details style="margin-top:16px" id="edit-box"><summary id="edit-title">Add or edit a campaign</summary>
+        <form id="camp-form" style="margin-top:12px;display:grid;gap:10px">
+          <div class="grid">
+            <label>Id (web address)<input name="id" placeholder="king-of-the-hill" required></label>
+            <label>Name<input name="name"></label>
+            <label>Ticker<input name="ticker"></label>
+            <label>Status<select name="status"><option>pending</option><option>live</option><option>paused</option><option>rejected</option></select></label>
+            <label>Featured<select name="featured"><option value="false">No</option><option value="true">Yes</option></select></label>
+            <label>Fee pool shown in USD (blank = automatic)<input name="fee_pool_usd_override" type="number" step="any"></label>
+          </div>
+          <label>Tagline<input name="tagline"></label>
+          <div class="grid">
+            <label>Image URL<input name="image_url" placeholder="https://…"></label>
+            <label>Creator Instagram<input name="creator_instagram"></label>
+            <label>Creator video link<input name="video_url"></label>
+            <label>Token mint (if launched elsewhere)<input name="token_mint"></label>
+            <label>DBC pool address<input name="pool_address"></label>
+            <label>Axiom link (blank = automatic)<input name="axiom_url"></label>
+            <label>GMGN link (blank = automatic)<input name="gmgn_url"></label>
+          </div>
+          <details><summary>Partner and facts (JSON)</summary>
+            <div class="grid" style="margin-top:8px">
+              <label>Partner<textarea name="partner" placeholder='{"name":"Tayo Ricci","handle":"tayoricci","instagram":"https://www.instagram.com/tayoricci"}'></textarea></label>
+              <label>Facts<textarea name="details" placeholder='[{"value":"20M+","label":"Followers across all platforms"}]'></textarea></label>
+              <label>Badges<textarea name="badges" placeholder='["Official partner"]'></textarea></label>
+            </div>
+          </details>
+          <div class="row"><button class="blue">Save campaign</button><button type="button" class="soft" id="form-clear">Clear form</button></div>
+        </form>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>Reels</h2>
+      <div class="tbl"><table><thead><tr><th>Clipper</th><th>Campaign</th><th>Reel</th><th>Views</th><th>Status</th><th></th></tr></thead><tbody id="clips"></tbody></table></div>
+    </div>
+
+    <div class="card">
+      <h2>Clippers</h2>
+      <div class="tbl"><table><thead><tr><th>Instagram</th><th>Wallet</th><th>Link code</th><th>Verified</th><th></th></tr></thead><tbody id="clippers"></tbody></table></div>
+    </div>
+
+    <div class="card">
+      <h2>Payouts</h2>
+      <div class="tbl"><table><thead><tr><th>Clipper</th><th>Campaign</th><th>Amount (raw units)</th><th>Status</th><th>Transaction</th><th></th></tr></thead><tbody id="payouts"></tbody></table></div>
+      <p class="note">A "failed" payout was sent but not confirmed. Open its transaction on Solscan. If it succeeded, mark it sent. If it does not exist, mark it owed and it goes out in the next run.</p>
+    </div>
+
+    <div class="card">
+      <h2>One-time setup: token launch settings</h2>
+      <p class="note">Creates the Meteora bonding curve settings that every campaign token uses, paired with the Clips main token (CLIPS_MINT). Run this once, then add the address it returns as DBC_CONFIG in Vercel and redeploy. Market caps are counted in Clips main tokens, not dollars.</p>
+      <form class="grid" id="cfg-form" style="margin-top:10px">
+        <label>Starting market cap (in Clips tokens)<input name="initialMarketCap" type="number" step="any" placeholder="10000"></label>
+        <label>Graduation market cap (in Clips tokens)<input name="migrationMarketCap" type="number" step="any" placeholder="500000"></label>
+        <label>Trading fee in basis points (100 = 1%)<input name="feeBps" type="number" value="100"></label>
+        <label>&nbsp;<button class="red">Create settings on Solana</button></label>
+      </form>
+      <div class="out" id="cfg-out" hidden></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let SECRET = sessionStorage.getItem("clips-admin") || "";
+let DATA = { campaigns: [] };
+
+async function call(path, payload, method){
+  const r = await fetch(path, { method: method || (payload ? "POST" : "GET"), headers: { "Content-Type": "application/json", "X-Admin-Secret": SECRET }, body: payload ? JSON.stringify(payload) : undefined });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || `Request failed (${r.status})`);
+  return j;
+}
+const admin = (action, extra) => call("/api/admin", { action, ...extra });
+
+$("#login-form").addEventListener("submit", async e => {
+  e.preventDefault(); SECRET = $("#secret").value.trim();
+  try { await call("/api/admin?action=status"); sessionStorage.setItem("clips-admin", SECRET); start(); }
+  catch (err) { alert(err.message); }
+});
+
+async function start(){ $("#login").hidden = true; $("#app").hidden = false; await Promise.all([loadStatus(), loadLists()]); }
+
+async function loadStatus(){
+  const s = await call("/api/admin?action=status");
+  const c = s.config, t = s.treasury || {};
+  const yes = v => v ? '<span class="pill ok">Set</span>' : '<span class="pill bad">Missing</span>';
+  const rows = [
+    ["Database", yes(c.SUPABASE)], ["Instagram checks (Apify)", yes(c.APIFY_TOKEN)], ["Solana RPC", yes(c.SOLANA_RPC_URL)],
+    ["Treasury wallet", c.TREASURY_SECRET_KEY ? `<code>${esc(t.address || "")}</code>` : yes(false)],
+    ["Treasury SOL", t.sol != null ? `${t.sol} SOL` : esc(t.error || "")],
+    ["Treasury Clips tokens", t.clips && t.clips.raw != null ? `${esc((Number(t.clips.raw) / 10 ** t.clips.decimals).toLocaleString())}` : esc(t.clips?.error || "")],
+    ["Clips main token", c.CLIPS_MINT ? `<code>${esc(c.CLIPS_MINT)}</code>` : yes(false)],
+    ["Launch settings (DBC_CONFIG)", c.DBC_CONFIG ? `<code>${esc(c.DBC_CONFIG)}</code>` : '<span class="pill warn">Not created yet</span>'],
+    ["Daily jobs (CRON_SECRET)", yes(c.CRON_SECRET)],
+    ["Payouts", c.PAYOUTS_ENABLED ? '<span class="pill ok">Live, sending real tokens</span>' : '<span class="pill warn">Dry run only</span>'],
+    ["Minimum payout", esc(c.MIN_PAYOUT) + " tokens"], ["Max per run", c.MAX_PAYOUT_PER_RUN === "0" ? "No limit" : esc(c.MAX_PAYOUT_PER_RUN) + " tokens"],
+    ["Platform fee", (Number(c.PLATFORM_FEE_BPS) / 100) + "%"], ["Site", esc(c.SITE_URL)],
+    ["Last runs", (s.runs || []).slice(0, 5).map(r => `${esc(r.kind)} ${r.dry_run ? "(dry)" : ""} ${new Date(r.started_at).toLocaleString()} ${r.ok === false ? '<span class="pill bad">errors</span>' : r.ok ? '<span class="pill ok">ok</span>' : '<span class="pill">running</span>'}`).join("<br>") || "None yet"]
+  ];
+  $("#status").innerHTML = rows.map(([k, v]) => `<b>${k}</b><div>${v}</div>`).join("");
+}
+
+async function loadLists(){
+  DATA = await call("/api/admin?action=list");
+  $("#camps").innerHTML = DATA.campaigns.map(c => `<tr>
+    <td><b>${esc(c.name)}</b> ${c.ticker ? `<span class="pill">${esc(c.ticker)}</span>` : ""} ${c.featured ? '<span class="pill ok">featured</span>' : ""}<br><span class="mono">${esc(c.id)}</span>${c.creator_instagram ? `<br>by @${esc(c.creator_instagram)}` : ""}</td>
+    <td><span class="pill ${c.status === "live" ? "ok" : c.status === "pending" ? "warn" : "bad"}">${esc(c.status)}</span></td>
+    <td>${c.token_mint ? `<a class="mono" href="https://solscan.io/token/${esc(c.token_mint)}" target="_blank" rel="noopener">${esc(c.token_mint.slice(0, 6))}…</a>` : "No token"}</td>
+    <td class="mono">claimed ${esc(c.fees_claimed)}<br>allocated ${esc(c.fees_allocated)}<br>unclaimed ${esc(c.fees_unclaimed)}</td>
+    <td><div class="row"><button class="soft" data-edit="${esc(c.id)}">Edit</button>${!c.token_mint ? `<button class="blue" data-launch="${esc(c.id)}">Launch token</button>` : ""}${c.status === "pending" ? `<button data-live="${esc(c.id)}">Approve</button>` : ""}</div></td></tr>`).join("") || '<tr><td colspan="5">No campaigns yet.</td></tr>';
+  $("#clips").innerHTML = DATA.clips.map(k => `<tr>
+    <td>@${esc(k.clips_clippers?.instagram)}</td><td class="mono">${esc(k.campaign_id)}</td>
+    <td><a href="${esc(k.url)}" target="_blank" rel="noopener">Open</a></td>
+    <td><input type="number" value="${Number(k.views)}" style="width:120px" data-views="${esc(k.id)}"></td>
+    <td><span class="pill ${k.status === "ok" ? "ok" : k.status === "pending" ? "warn" : "bad"}">${esc(k.status)}</span>${k.reject_reason ? `<br><small>${esc(k.reject_reason)}</small>` : ""}</td>
+    <td><div class="row"><button class="soft" data-clip="${esc(k.id)}" data-st="ok">Approve</button><button class="soft" data-clip="${esc(k.id)}" data-st="rejected">Reject</button></div></td></tr>`).join("") || '<tr><td colspan="6">No Reels yet.</td></tr>';
+  $("#clippers").innerHTML = DATA.clippers.map(p => `<tr>
+    <td><a href="https://www.instagram.com/${esc(p.instagram)}/" target="_blank" rel="noopener">@${esc(p.instagram)}</a></td><td class="mono">${esc(p.wallet)}</td><td class="mono">/r/${esc(p.code)}</td>
+    <td>${p.verified ? '<span class="pill ok">verified</span>' : '<span class="pill warn">not verified</span>'}</td>
+    <td><button class="soft" data-verify="${esc(p.id)}" data-v="${p.verified ? "false" : "true"}">${p.verified ? "Unverify" : "Mark verified"}</button></td></tr>`).join("") || '<tr><td colspan="5">No clippers yet.</td></tr>';
+  $("#payouts").innerHTML = DATA.payouts.map(p => `<tr>
+    <td>@${esc(p.clips_clippers?.instagram)}</td><td class="mono">${esc(p.campaign_id)}</td><td class="mono">${esc(p.amount)}</td>
+    <td><span class="pill ${p.status === "sent" ? "ok" : p.status === "failed" ? "bad" : "warn"}">${esc(p.status)}</span>${p.error ? `<br><small>${esc(p.error.slice(0, 120))}</small>` : ""}</td>
+    <td>${p.signature ? `<a class="mono" href="https://solscan.io/tx/${esc(p.signature)}" target="_blank" rel="noopener">${esc(p.signature.slice(0, 10))}…</a>` : ""}</td>
+    <td>${p.status === "failed" || p.status === "sending" ? `<div class="row"><button class="soft" data-resolve="${esc(p.id)}" data-st="sent">It landed</button><button class="soft" data-resolve="${esc(p.id)}" data-st="owed">Pay again</button></div>` : ""}</td></tr>`).join("") || '<tr><td colspan="6">No payouts yet.</td></tr>';
+}
+
+function fillForm(c){
+  const f = $("#camp-form");
+  for (const el of f.elements){
+    if (!el.name) continue;
+    let v = c ? c[el.name] : "";
+    if (v && typeof v === "object") v = JSON.stringify(v);
+    el.value = v == null ? (el.tagName === "SELECT" ? el.options[0].value : "") : String(v);
+  }
+  $("#edit-box").open = true; $("#edit-title").textContent = c ? `Edit ${c.name}` : "Add or edit a campaign";
+  $("#edit-box").scrollIntoView({ behavior: "smooth" });
+}
+$("#form-clear").onclick = () => fillForm(null);
+
+$("#camp-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const payload = {};
+  for (const el of e.target.elements){
+    if (!el.name) continue;
+    let v = el.value.trim();
+    if (["partner", "details", "badges"].includes(el.name)) { if (!v) { payload[el.name] = null; continue; } try { v = JSON.parse(v); } catch { alert(`${el.name} is not valid JSON.`); return; } }
+    if (el.name === "featured") v = v === "true";
+    if (el.name === "fee_pool_usd_override") v = v === "" ? null : Number(v);
+    if (el.name === "image_url" && v === "(uploaded image)") continue;
+    payload[el.name] = v;
+  }
+  try { await admin("campaign-save", payload); await loadLists(); alert("Saved."); } catch (err) { alert(err.message); }
+});
+
+document.addEventListener("click", async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  try {
+    if (b.dataset.edit) return fillForm(DATA.campaigns.find(c => c.id === b.dataset.edit));
+    if (b.dataset.live) { await admin("campaign-save", { id: b.dataset.live, status: "live" }); return loadLists(); }
+    if (b.dataset.launch) {
+      if (!confirm("Launch this campaign's token on Solana now? This spends a small amount of SOL from the treasury.")) return;
+      b.disabled = true; const out = await admin("launch", { id: b.dataset.launch }); alert(`Launched.\nToken: ${out.mint}\nPool: ${out.pool}`); return loadLists();
+    }
+    if (b.dataset.clip) {
+      const views = document.querySelector(`[data-views="${b.dataset.clip}"]`).value;
+      await admin("clip-save", { id: b.dataset.clip, status: b.dataset.st, views: Number(views) }); return loadLists();
+    }
+    if (b.dataset.verify) { await admin("clipper-save", { id: b.dataset.verify, verified: b.dataset.v === "true" }); return loadLists(); }
+    if (b.dataset.resolve) { await admin("payout-resolve", { id: b.dataset.resolve, status: b.dataset.st }); return loadLists(); }
+    if (b.dataset.run) {
+      if (b.dataset.confirm && !confirm("Send real payouts now?")) return;
+      b.disabled = true; const out = $("#run-out"); out.hidden = false; out.textContent = "Running… this can take a few minutes.";
+      try { const r = await call(b.dataset.run, null, "POST"); out.textContent = JSON.stringify(r.summary || r, null, 2); }
+      catch (err) { out.textContent = err.message; }
+      b.disabled = false; loadStatus(); loadLists(); return;
+    }
+    if (b.id === "refresh-all") { await loadStatus(); return loadLists(); }
+  } catch (err) { alert(err.message); b.disabled = false; }
+});
+
+$("#cfg-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!confirm("Create the token launch settings on Solana? Do this only once.")) return;
+  const f = e.target, out = $("#cfg-out"); out.hidden = false; out.textContent = "Creating…";
+  try { const r = await admin("setup-config", { initialMarketCap: Number(f.initialMarketCap.value), migrationMarketCap: Number(f.migrationMarketCap.value), feeBps: Number(f.feeBps.value) }); out.textContent = `Done.\nDBC_CONFIG = ${r.config}\nTransaction: ${r.signature}\n\n${r.next}`; }
+  catch (err) { out.textContent = err.message; }
+});
+
+if (SECRET) start().catch(() => { $("#login").hidden = false; $("#app").hidden = true; });
+</script>
+</body>
+</html>
