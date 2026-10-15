@@ -4,30 +4,16 @@ Everything you normally change is at the top of index.html,
 between "EDIT HERE" and "END OF EDIT AREA".
 Open index.html with TextEdit (right click > Open With > TextEdit).
 
-TAYO'S PHOTO
-  His photo is built into index.html, so index.html alone is enough.
-  To use a bigger picture later, put it in this folder (e.g. tayo-big.jpg)
-  and in index.html change   photo:  ""   to   photo:  "tayo-big.jpg"
-
-FEE POOL
-  Each campaign has feePool: 25000 (dollars, numbers only, no $ or commas).
-  Change the number. Dollars and percentages on the leaderboard update by themselves.
-
-LEADERBOARD
-  Find LEADERBOARD. Each line is one clipper:
-  { username: "goalcam.edits", views: 1840000 },
-  Change the name or views, copy a line to add a clipper, delete a line to remove one.
-  When the numbers are real, change LEADERBOARD_IS_SAMPLE = true to false.
-
-BUY LINKS
-  Replace [AXIOM LINK] and [GMGN LINK] with your real links. Keep the quotes.
-
-CAMPAIGNS
-  One line per campaign inside "const CAMPAIGNS = [ ... ]".
-  Lines marked SAMPLE are placeholders.
-
-VIDEO
-  Search for "PASTE INSTAGRAM EMBED HERE" and paste Instagram's embed code there.
+1. LINKS: replace [AXIOM LINK] and [GMGN LINK]. Add your X and Telegram
+   links to make them appear in the side menu.
+2. PARTNER: Tayo's photo is built in. Leave photo as "".
+3. VIDEO: search for "PASTE INSTAGRAM EMBED HERE".
+4. CAMPAIGNS: one block per campaign. feePool is in dollars, numbers only.
+   ticker is optional, e.g. "KING".
+5. LEADERBOARD: one line per clipper: { username: "name", views: 123000 },
+   Set LEADERBOARD_IS_SAMPLE to false when the numbers are real.
+6. LEGAL: fill in operator (company or person) and contact email.
+   Have the Terms, Privacy and Risk pages checked before going public.
 
 UPDATING THE LIVE SITE
-  Upload this whole folder to the same Vercel project again. The link stays the same.
+  Upload this folder to the same Vercel project again. The link stays the same.
